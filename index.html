@@ -10,6 +10,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Supabase Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -172,29 +174,15 @@
         </div>
     </div>
 
-    <!-- Firebase Scripts -->
+    <!-- Supabase Logic -->
     <script type="module">
-        // Import the functions you need from the SDKs you need
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        const { createClient } = supabase;
 
-        // Your web app's Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyBOiRT4rkfFAqCLmkl8uhdglr32BgZIkQ0",
-            authDomain: "avaliador-de-hamburguer.firebaseapp.com",
-            databaseURL: "https://avaliador-de-hamburguer-default-rtdb.firebaseio.com",
-            projectId: "avaliador-de-hamburguer",
-            storageBucket: "avaliador-de-hamburguer.appspot.com",
-            messagingSenderId: "296968510744",
-            appId: "1:296968510744:web:8e1054af2b449f38f6526d",
-            measurementId: "G-PGNH024HEL"
-        };
-        
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const auth = getAuth(app);
+        // IMPORTANTE: Cole a sua URL e a sua chave ANON aqui
+        const SUPABASE_URL = 'https://pwkupqqwcbixfwbxcnpa.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB3a3VwcXF3Y2JpeGZ3YnhjbnBhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYxMjI5MzQsImV4cCI6MjA3MTY5ODkzNH0.nI5x2tGh6uNgmjjdsoAfrKE0gCMbwSqkIqA3FQQlVaI';
+
+        const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         // --- ELEMENTOS DO DOM ---
         const reviewsFeed = document.getElementById('reviews-feed');
@@ -209,29 +197,27 @@
         const loadingOverlay = document.getElementById('loading-overlay');
         const userNameSelect = document.getElementById('user-name');
 
-        let currentUserId = null; // Armazena o ID do usuário anônimo
         let allReviews = []; // Cache local das avaliações
 
         // --- DADOS LOCAIS (AVATARES) ---
         const userAvatars = {
             'Arcanjo': '🧑‍🍳', 'Luana': '👩‍💻', 'Michel': '👨‍🎨', 'Julia': '👩‍💼',
             'Beatriz': '🧑‍🚀', 'Willian': '👨‍🔬', 'Manu': '👩‍🎨', 'Victor': '👨‍💻',
-            'Tirras': '🧑‍🍳', 'Kyvia': '👩‍🚀', 'Clévio': '👨‍�',
+            'Tirras': '🧑‍🍳', 'Kyvia': '👩‍🚀', 'Clévio': '👨‍🔬',
         };
-
-        // --- AUTENTICAÇÃO ANÔNIMA ---
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                currentUserId = user.uid;
-                console.log("Usuário anônimo conectado:", currentUserId);
-                // Após autenticar, começa a ouvir as avaliações do banco de dados
-                listenForReviews();
-            } else {
-                signInAnonymously(auth).catch((error) => {
-                    console.error("Erro na autenticação anônima:", error);
-                });
+        
+        // --- GESTÃO DE UTILIZADOR ANÓNIMO ---
+        function getAnonymousUserId() {
+            let userId = localStorage.getItem('anonymousUserId');
+            if (!userId) {
+                userId = crypto.randomUUID();
+                localStorage.setItem('anonymousUserId', userId);
             }
-        });
+            return userId;
+        }
+
+        const currentUserId = getAnonymousUserId();
+        console.log("ID de Utilizador Anónimo:", currentUserId);
 
         // --- FUNÇÕES ---
         const calculateFinalScore = (ratings) => {
@@ -242,8 +228,7 @@
 
         const createReviewCardHTML = (review) => {
             const finalScore = calculateFinalScore(review.ratings);
-            // O usuário pode deletar se o ID do autor da avaliação for o mesmo do usuário logado
-            const isCurrentUser = review.authorId === currentUserId;
+            const isCurrentUser = review.author_id === currentUserId;
 
             let deleteButtonHTML = '';
             if (isCurrentUser) {
@@ -258,10 +243,10 @@
                 <div class="bg-gray-50 border border-gray-200 rounded-lg p-5 transition-shadow hover:shadow-md">
                     <div class="flex justify-between items-start">
                         <div>
-                            <h3 class="font-bold text-lg text-gray-900">${review.restaurantName}</h3>
+                            <h3 class="font-bold text-lg text-gray-900">${review.restaurant_name}</h3>
                             <div class="flex items-center gap-2 text-sm text-gray-600 mt-1">
-                                <span class="text-2xl">${userAvatars[review.userName] || '👤'}</span>
-                                <span>${review.userName}</span>
+                                <span class="text-2xl">${userAvatars[review.user_name] || '👤'}</span>
+                                <span>${review.user_name}</span>
                             </div>
                         </div>
                         <div class="text-right flex items-start gap-2">
@@ -296,10 +281,10 @@
 
             const restaurantScores = {};
             allReviews.forEach(review => {
-                if (!restaurantScores[review.restaurantName]) {
-                    restaurantScores[review.restaurantName] = { scores: [] };
+                if (!restaurantScores[review.restaurant_name]) {
+                    restaurantScores[review.restaurant_name] = { scores: [] };
                 }
-                restaurantScores[review.restaurantName].scores.push(calculateFinalScore(review.ratings));
+                restaurantScores[review.restaurant_name].scores.push(calculateFinalScore(review.ratings));
             });
 
             const rankedList = Object.keys(restaurantScores).map(name => {
@@ -320,11 +305,7 @@
         };
 
         const renderContent = () => {
-            const sortedReviews = [...allReviews].sort((a, b) => {
-                const dateA = a.createdAt?.seconds || 0;
-                const dateB = b.createdAt?.seconds || 0;
-                return dateB - dateA;
-            });
+            const sortedReviews = [...allReviews].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
             
             if (sortedReviews.length > 0) {
                 reviewsFeed.innerHTML = sortedReviews.map(createReviewCardHTML).join('');
@@ -335,7 +316,7 @@
             renderRanking();
             addDeleteButtonListeners();
         };
-
+        
         const addDeleteButtonListeners = () => {
             document.querySelectorAll('.delete-btn').forEach(button => {
                 button.addEventListener('click', (e) => {
@@ -347,10 +328,14 @@
 
         const handleDeleteReview = async (reviewId) => {
             if (!reviewId) return;
-            try {
-                await deleteDoc(doc(db, "reviews", reviewId));
-            } catch (error) {
-                console.error("Erro ao deletar avaliação: ", error);
+            const { error } = await supabaseClient
+                .from('reviews')
+                .delete()
+                .eq('id', reviewId)
+                .eq('author_id', currentUserId); // Segurança extra
+            
+            if (error) {
+                console.error("Erro ao apagar avaliação:", error);
             }
         };
 
@@ -375,9 +360,9 @@
             }
 
             const newReview = {
-                authorId: currentUserId,
-                userName: userNameSelect.value,
-                restaurantName: document.getElementById('restaurant-name').value,
+                author_id: currentUserId,
+                user_name: userNameSelect.value,
+                restaurant_name: document.getElementById('restaurant-name').value,
                 ratings: {
                     hamburguer: parseFloat(document.getElementById('rating-hamburguer').value),
                     pao: parseFloat(document.getElementById('rating-pao').value),
@@ -390,32 +375,45 @@
                     custo: parseFloat(document.getElementById('rating-custo').value)
                 },
                 comment: document.getElementById('comment').value,
-                createdAt: serverTimestamp()
             };
 
-            try {
-                await addDoc(collection(db, "reviews"), newReview);
-                reviewForm.reset();
-                closeModal();
-            } catch (error) {
-                console.error("Erro ao adicionar avaliação: ", error);
+            const { error } = await supabaseClient.from('reviews').insert([newReview]);
+            
+            if (error) {
+                console.error("Erro ao adicionar avaliação:", error);
                 formError.textContent = "Erro ao salvar. Tente novamente.";
                 formError.classList.remove('hidden');
+            } else {
+                reviewForm.reset();
+                closeModal();
             }
         };
 
-        // --- LISTENER DO FIREBASE ---
-        const listenForReviews = () => {
-            const reviewsCollection = collection(db, "reviews");
-            onSnapshot(reviewsCollection, (snapshot) => {
-                allReviews = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                renderContent();
-                loadingOverlay.classList.add('hidden'); // Esconde o loader quando os dados chegam
-            }, (error) => {
+        // --- LISTENER DO SUPABASE ---
+        async function fetchAndRenderReviews() {
+            const { data, error } = await supabaseClient
+                .from('reviews')
+                .select('*');
+
+            if (error) {
                 console.error("Erro ao buscar avaliações:", error);
                 loadingOverlay.innerHTML = "<p class='text-red-500'>Erro ao carregar dados.</p>";
-            });
-        };
+            } else {
+                allReviews = data;
+                renderContent();
+                loadingOverlay.classList.add('hidden');
+            }
+        }
+
+        // --- INICIALIZAÇÃO E REALTIME ---
+        fetchAndRenderReviews(); // Busca inicial
+
+        supabaseClient.channel('public:reviews')
+          .on('postgres_changes', { event: '*', schema: 'public', table: 'reviews' }, payload => {
+            console.log('Alteração recebida!', payload);
+            fetchAndRenderReviews(); // Busca novamente os dados quando algo muda
+          })
+          .subscribe();
 
         const openModal = () => {
             formError.classList.add('hidden');
@@ -442,4 +440,3 @@
     </script>
 </body>
 </html>
-�
