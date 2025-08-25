@@ -112,7 +112,7 @@
                                 <option value="Michel">Michel</option>
                                 <option value="Julia">Julia</option>
                                 <option value="Beatriz">Beatriz</option>
-                                <option value="Willian">Willian</option>
+                                <option value="William">William</option>
                                 <option value="Manu">Manu</option>
                                 <option value="Victor">Victor</option>
                                 <option value="Tirras">Tirras</option>
@@ -211,7 +211,7 @@
         // --- DADOS LOCAIS (AVATARES) ---
         const userAvatars = {
             'Arcanjo': '🧑‍🍳', 'Luana': '👩‍💻', 'Michel': '👨‍🎨', 'Julia': '👩‍💼',
-            'Beatriz': '🧑‍🚀', 'Willian': '👨‍🔬', 'Manu': '👩‍🎨', 'Victor': '👨‍💻',
+            'Beatriz': '🧑‍🚀', 'William': '👨‍🔬', 'Manu': '👩‍🎨', 'Victor': '👨‍💻',
             'Tirras': '🧑‍🍳', 'Kyvia': '👩‍🚀', 'Clévio': '👨‍🔬',
         };
         
@@ -289,16 +289,20 @@
 
             const restaurantScores = {};
             allReviews.forEach(review => {
-                if (!restaurantScores[review.restaurant_name]) {
-                    restaurantScores[review.restaurant_name] = { scores: [] };
+                // Normaliza o nome do restaurante para agrupar corretamente
+                const normalizedName = review.restaurant_name.trim().toLowerCase();
+                if (!restaurantScores[normalizedName]) {
+                    restaurantScores[normalizedName] = { 
+                        originalName: review.restaurant_name.trim(), // Guarda o nome original para exibição
+                        scores: [] 
+                    };
                 }
-                restaurantScores[review.restaurant_name].scores.push(calculateFinalScore(review.ratings));
+                restaurantScores[normalizedName].scores.push(calculateFinalScore(review.ratings));
             });
 
-            const rankedList = Object.keys(restaurantScores).map(name => {
-                const scores = restaurantScores[name].scores;
-                const average = scores.reduce((a, b) => a + b, 0) / scores.length;
-                return { name, averageScore: average };
+            const rankedList = Object.values(restaurantScores).map(resto => {
+                const average = resto.scores.reduce((a, b) => a + b, 0) / resto.scores.length;
+                return { name: resto.originalName, averageScore: average };
             }).sort((a, b) => b.averageScore - a.averageScore);
 
             rankingList.innerHTML = rankedList.map((resto, index) => `
@@ -402,7 +406,7 @@
             const reviewData = {
                 author_id: currentUserId,
                 user_name: userNameSelect.value,
-                restaurant_name: document.getElementById('restaurant-name').value,
+                restaurant_name: document.getElementById('restaurant-name').value.trim(), // Limpa espaços
                 ratings: {
                     hamburguer: parseFloat(document.getElementById('rating-hamburguer').value),
                     pao: parseFloat(document.getElementById('rating-pao').value),
