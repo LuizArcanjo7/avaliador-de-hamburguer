@@ -94,9 +94,11 @@
         <div class="modal-backdrop fixed inset-0"></div>
         <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg m-4 relative transform transition-all duration-300 scale-95 opacity-0 overflow-y-auto max-h-[90vh]" id="modal-panel">
             <form id="review-form" class="p-8">
-                <h3 class="text-2xl font-bold mb-2 text-gray-900">Sua Avaliação</h3>
+                <h3 id="modal-title" class="text-2xl font-bold mb-2 text-gray-900">Sua Avaliação</h3>
                 <p class="text-gray-500 mb-6">Dê notas de 0 a 10 para cada critério.</p>
                 
+                <input type="hidden" id="edit-review-id">
+
                 <div class="space-y-5">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
@@ -168,7 +170,7 @@
                 <div id="form-error" class="text-red-500 text-sm mt-4 text-center font-semibold hidden"></div>
                 <div class="mt-8 flex justify-end gap-3">
                     <button type="button" id="closeModalBtn" class="bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300 transition-colors">Cancelar</button>
-                    <button type="submit" class="bg-purple-600 text-white font-semibold py-2 px-6 rounded-lg shadow-md hover:bg-purple-700 transition-colors">Publicar</button>
+                    <button type="submit" id="submit-btn" class="bg-purple-600 text-white font-semibold py-2 px-6 rounded-lg shadow-md hover:bg-purple-700 transition-colors">Publicar</button>
                 </div>
             </form>
         </div>
@@ -196,6 +198,9 @@
         const ratingInputs = document.querySelectorAll('.rating-input');
         const loadingOverlay = document.getElementById('loading-overlay');
         const userNameSelect = document.getElementById('user-name');
+        const modalTitle = document.getElementById('modal-title');
+        const submitBtn = document.getElementById('submit-btn');
+        const editReviewIdInput = document.getElementById('edit-review-id');
 
         let allReviews = []; // Cache local das avaliações
 
@@ -203,7 +208,7 @@
         const userAvatars = {
             'Arcanjo': '🧑‍🍳', 'Luana': '👩‍💻', 'Michel': '👨‍🎨', 'Julia': '👩‍💼',
             'Beatriz': '🧑‍🚀', 'Willian': '👨‍🔬', 'Manu': '👩‍🎨', 'Victor': '👨‍💻',
-            'Tirras': '🧑‍🍳', 'Kyvia': '👩‍🚀', 'Clévio': '👨‍�',
+            'Tirras': '🧑‍🍳', 'Kyvia': '👩‍🚀', 'Clévio': '👨‍🔬',
         };
         
         // --- GESTÃO DE UTILIZADOR ANÓNIMO ---
@@ -229,8 +234,10 @@
         const createReviewCardHTML = (review) => {
             const finalScore = calculateFinalScore(review.ratings);
 
-            // O botão de apagar agora aparece para todas as avaliações
-            const deleteButtonHTML = `
+            const actionButtonsHTML = `
+                <button data-review-id="${review.id}" class="edit-btn text-gray-400 hover:text-blue-500 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+                </button>
                 <button data-review-id="${review.id}" class="delete-btn text-gray-400 hover:text-red-500 transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
                 </button>
@@ -251,7 +258,7 @@
                                 <span class="font-bold text-2xl text-purple-600">${finalScore.toFixed(1)}</span>
                                 <span class="text-xs text-gray-500 block">NOTA FINAL</span>
                             </div>
-                            ${deleteButtonHTML}
+                            <div class="flex flex-col gap-2">${actionButtonsHTML}</div>
                         </div>
                     </div>
                     <p class="text-gray-700 my-4">${review.comment}</p>
@@ -312,6 +319,7 @@
             
             renderRanking();
             addDeleteButtonListeners();
+            addEditButtonListeners();
         };
         
         const addDeleteButtonListeners = () => {
@@ -323,9 +331,17 @@
             });
         };
 
+        const addEditButtonListeners = () => {
+            document.querySelectorAll('.edit-btn').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const reviewIdToEdit = e.currentTarget.dataset.reviewId;
+                    handleEditReview(reviewIdToEdit);
+                });
+            });
+        };
+
         const handleDeleteReview = async (reviewId) => {
             if (!reviewId) return;
-            // A verificação do autor foi removida daqui para permitir que qualquer um apague
             const { error } = await supabaseClient
                 .from('reviews')
                 .delete()
@@ -334,6 +350,26 @@
             if (error) {
                 console.error("Erro ao apagar avaliação:", error);
             }
+        };
+
+        const handleEditReview = (reviewId) => {
+            const reviewToEdit = allReviews.find(review => review.id == reviewId);
+            if (!reviewToEdit) return;
+
+            // Preenche o formulário
+            editReviewIdInput.value = reviewToEdit.id;
+            userNameSelect.value = reviewToEdit.user_name;
+            document.getElementById('restaurant-name').value = reviewToEdit.restaurant_name;
+            document.getElementById('comment').value = reviewToEdit.comment;
+            
+            for (const key in reviewToEdit.ratings) {
+                document.getElementById(`rating-${key}`).value = reviewToEdit.ratings[key];
+            }
+
+            // Altera o modal para o modo de edição
+            modalTitle.textContent = "Editar Avaliação";
+            submitBtn.textContent = "Salvar Alterações";
+            openModal();
         };
 
         const handleFormSubmit = async (event) => {
@@ -356,7 +392,7 @@
                 return;
             }
 
-            const newReview = {
+            const reviewData = {
                 author_id: currentUserId,
                 user_name: userNameSelect.value,
                 restaurant_name: document.getElementById('restaurant-name').value,
@@ -374,10 +410,26 @@
                 comment: document.getElementById('comment').value,
             };
 
-            const { error } = await supabaseClient.from('reviews').insert([newReview]);
+            const editingId = editReviewIdInput.value;
+            let error;
+
+            if (editingId) {
+                // Modo de Edição
+                const { error: updateError } = await supabaseClient
+                    .from('reviews')
+                    .update(reviewData)
+                    .eq('id', editingId);
+                error = updateError;
+            } else {
+                // Modo de Criação
+                const { error: insertError } = await supabaseClient
+                    .from('reviews')
+                    .insert([reviewData]);
+                error = insertError;
+            }
             
             if (error) {
-                console.error("Erro ao adicionar avaliação:", error);
+                console.error("Erro ao salvar avaliação:", error);
                 formError.textContent = "Erro ao salvar. Tente novamente.";
                 formError.classList.remove('hidden');
             } else {
@@ -422,12 +474,26 @@
 
         const closeModal = () => {
             modalPanel.classList.add('scale-95', 'opacity-0');
-            setTimeout(() => { modal.classList.add('hidden'); modal.classList.remove('flex'); }, 200);
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                // Reseta o formulário para o estado de criação ao fechar
+                reviewForm.reset();
+                editReviewIdInput.value = '';
+                modalTitle.textContent = "Sua Avaliação";
+                submitBtn.textContent = "Publicar";
+            }, 200);
         };
 
         // --- EVENT LISTENERS ---
         reviewForm.addEventListener('submit', handleFormSubmit);
-        openModalBtn.addEventListener('click', openModal);
+        openModalBtn.addEventListener('click', () => {
+            // Garante que o formulário está no modo de criação ao clicar no botão principal
+            editReviewIdInput.value = '';
+            modalTitle.textContent = "Sua Avaliação";
+            submitBtn.textContent = "Publicar";
+            openModal();
+        });
         closeModalBtn.addEventListener('click', closeModal);
         modal.addEventListener('click', (e) => {
             if (e.target.classList.contains('modal-backdrop')) {
@@ -437,4 +503,3 @@
     </script>
 </body>
 </html>
-�
