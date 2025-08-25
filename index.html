@@ -71,8 +71,14 @@
         <div class="mb-6">
             <div class="border-b border-gray-200">
                 <nav class="-mb-px flex space-x-6" aria-label="Tabs">
-                    <button data-category="hamburguer" class="category-tab whitespace-nowrap py-3 px-1 border-b-2 font-medium text-sm tab-active">Hambúrgueres</button>
-                    <button data-category="pizza" class="category-tab whitespace-nowrap py-3 px-1 border-b-2 font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">Pizzas</button>
+                    <button data-category="hamburguer" class="category-tab whitespace-nowrap py-3 px-2 border-b-2 font-medium text-sm tab-active flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11h18M3 6h18M3 16h18"/></svg>
+                        Hambúrgueres
+                    </button>
+                    <button data-category="pizza" class="category-tab whitespace-nowrap py-3 px-2 border-b-2 font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 0 0-9.4 13.5c.6.9 1.5 1.5 2.4 1.5h14c.9 0 1.8-.6 2.4-1.5A10 10 0 0 0 12 2Z"/><path d="m2 12 10 10 10-10"/><path d="M12 12v10"/></svg>
+                        Pizzas
+                    </button>
                 </nav>
             </div>
         </div>
@@ -158,11 +164,7 @@
                     
                     <!-- Hamburguer Fields -->
                     <div id="hamburguer-fields" class="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-5">
-                        <div>
-                            <label for="rating-hamburguer" class="block text-sm font-medium text-gray-700 mb-1">Hambúrguer</label>
-                            <input type="number" id="rating-hamburguer" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required>
-                        </div>
-                        <!-- ... (outros campos de hambúrguer) ... -->
+                        <div><label for="rating-hamburguer" class="block text-sm font-medium text-gray-700 mb-1">Hambúrguer</label><input type="number" id="rating-hamburguer" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required></div>
                         <div><label for="rating-pao" class="block text-sm font-medium text-gray-700 mb-1">Pão</label><input type="number" id="rating-pao" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required></div>
                         <div><label for="rating-equilibrio" class="block text-sm font-medium text-gray-700 mb-1">Equilíbrio</label><input type="number" id="rating-equilibrio" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required></div>
                         <div><label for="rating-acompanhamentos" class="block text-sm font-medium text-gray-700 mb-1">Acompanh.</label><input type="number" id="rating-acompanhamentos" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required></div>
@@ -174,17 +176,23 @@
                     </div>
 
                     <!-- Pizza Fields -->
-                    <div id="pizza-fields" class="hidden grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-5">
-                        <div><label for="rating-massa" class="block text-sm font-medium text-gray-700 mb-1">Massa</label><input type="number" id="rating-massa" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
-                        <div><label for="rating-molho" class="block text-sm font-medium text-gray-700 mb-1">Molho</label><input type="number" id="rating-molho" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
-                        <div><label for="rating-queijo" class="block text-sm font-medium text-gray-700 mb-1">Queijo</label><input type="number" id="rating-queijo" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
-                        <div><label for="rating-cobertura" class="block text-sm font-medium text-gray-700 mb-1">Cobertura</label><input type="number" id="rating-cobertura" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
-                        <div><label for="rating-pizza_equilibrio" class="block text-sm font-medium text-gray-700 mb-1">Equilíbrio</label><input type="number" id="rating-pizza_equilibrio" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
-                        <div><label for="rating-pizza_atendimento" class="block text-sm font-medium text-gray-700 mb-1">Atendimento</label><input type="number" id="rating-pizza_atendimento" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
-                        <div><label for="rating-pizza_ambiente" class="block text-sm font-medium text-gray-700 mb-1">Ambiente</label><input type="number" id="rating-pizza_ambiente" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
-                        <div><label for="rating-pizza_cardapio" class="block text-sm font-medium text-gray-700 mb-1">Cardápio</label><input type="number" id="rating-pizza_cardapio" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
-                        <div><label for="rating-pizza_tempo" class="block text-sm font-medium text-gray-700 mb-1">Tempo</label><input type="number" id="rating-pizza_tempo" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
-                        <div><label for="rating-pizza_custo" class="block text-sm font-medium text-gray-700 mb-1">Custo</label><input type="number" id="rating-pizza_custo" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
+                    <div id="pizza-fields" class="hidden space-y-5">
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-5">
+                            <div><label for="rating-massa" class="block text-sm font-medium text-gray-700 mb-1">Massa</label><input type="number" id="rating-massa" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
+                            <div><label for="rating-molho" class="block text-sm font-medium text-gray-700 mb-1">Molho</label><input type="number" id="rating-molho" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
+                            <div><label for="rating-queijo" class="block text-sm font-medium text-gray-700 mb-1">Queijo</label><input type="number" id="rating-queijo" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
+                            <div><label for="rating-cobertura" class="block text-sm font-medium text-gray-700 mb-1">Cobertura</label><input type="number" id="rating-cobertura" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
+                            <div><label for="rating-pizza_equilibrio" class="block text-sm font-medium text-gray-700 mb-1">Equilíbrio</label><input type="number" id="rating-pizza_equilibrio" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
+                            <div><label for="rating-pizza_atendimento" class="block text-sm font-medium text-gray-700 mb-1">Atendimento</label><input type="number" id="rating-pizza_atendimento" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
+                            <div><label for="rating-pizza_ambiente" class="block text-sm font-medium text-gray-700 mb-1">Ambiente</label><input type="number" id="rating-pizza_ambiente" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
+                            <div><label for="rating-pizza_cardapio" class="block text-sm font-medium text-gray-700 mb-1">Cardápio</label><input type="number" id="rating-pizza_cardapio" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
+                            <div><label for="rating-pizza_tempo" class="block text-sm font-medium text-gray-700 mb-1">Tempo</label><input type="number" id="rating-pizza_tempo" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
+                            <div><label for="rating-pizza_custo" class="block text-sm font-medium text-gray-700 mb-1">Custo</label><input type="number" id="rating-pizza_custo" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
+                        </div>
+                        <div>
+                            <label for="diferencial" class="block text-sm font-medium text-gray-700 mb-1">Diferencial</label>
+                            <textarea id="diferencial" rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" placeholder="O que torna esta pizza especial?"></textarea>
+                        </div>
                     </div>
 
                     <div>
@@ -219,7 +227,6 @@
         const openModalBtn = document.getElementById('openModalBtn');
         const closeModalBtn = document.getElementById('closeModalBtn');
         const formError = document.getElementById('form-error');
-        const ratingInputs = document.querySelectorAll('.rating-input');
         const loadingOverlay = document.getElementById('loading-overlay');
         const userNameSelect = document.getElementById('user-name');
         const modalTitle = document.getElementById('modal-title');
@@ -268,342 +275,4 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
                 </button>
                 <button data-review-id="${review.id}" class="delete-btn text-gray-400 hover:text-red-500 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-                </button>
-            `;
-            
-            let ratingsHTML = '';
-            if (review.category === 'hamburguer') {
-                ratingsHTML = `
-                    <div><span class="font-semibold block sm:inline">Hambúrguer:</span> ${review.ratings.hamburguer.toFixed(1)}</div>
-                    <div><span class="font-semibold block sm:inline">Pão:</span> ${review.ratings.pao.toFixed(1)}</div>
-                    <div><span class="font-semibold block sm:inline">Equilíbrio:</span> ${review.ratings.equilibrio.toFixed(1)}</div>
-                    <div><span class="font-semibold block sm:inline">Acompanh.:</span> ${review.ratings.acompanhamentos.toFixed(1)}</div>
-                    <div><span class="font-semibold block sm:inline">Atendimento:</span> ${review.ratings.atendimento.toFixed(1)}</div>
-                    <div><span class="font-semibold block sm:inline">Ambiente:</span> ${review.ratings.ambiente.toFixed(1)}</div>
-                    <div><span class="font-semibold block sm:inline">Cardápio:</span> ${review.ratings.cardapio.toFixed(1)}</div>
-                    <div><span class="font-semibold block sm:inline">Tempo:</span> ${review.ratings.tempo.toFixed(1)}</div>
-                    <div><span class="font-semibold block sm:inline">Custo:</span> ${review.ratings.custo.toFixed(1)}</div>
-                `;
-            } else if (review.category === 'pizza') {
-                 ratingsHTML = `
-                    <div><span class="font-semibold block sm:inline">Massa:</span> ${review.ratings.massa.toFixed(1)}</div>
-                    <div><span class="font-semibold block sm:inline">Molho:</span> ${review.ratings.molho.toFixed(1)}</div>
-                    <div><span class="font-semibold block sm:inline">Queijo:</span> ${review.ratings.queijo.toFixed(1)}</div>
-                    <div><span class="font-semibold block sm:inline">Cobertura:</span> ${review.ratings.cobertura.toFixed(1)}</div>
-                    <div><span class="font-semibold block sm:inline">Equilíbrio:</span> ${review.ratings.pizza_equilibrio.toFixed(1)}</div>
-                    <div><span class="font-semibold block sm:inline">Atendimento:</span> ${review.ratings.pizza_atendimento.toFixed(1)}</div>
-                    <div><span class="font-semibold block sm:inline">Ambiente:</span> ${review.ratings.pizza_ambiente.toFixed(1)}</div>
-                    <div><span class="font-semibold block sm:inline">Cardápio:</span> ${review.ratings.pizza_cardapio.toFixed(1)}</div>
-                    <div><span class="font-semibold block sm:inline">Tempo:</span> ${review.ratings.pizza_tempo.toFixed(1)}</div>
-                    <div><span class="font-semibold block sm:inline">Custo:</span> ${review.ratings.pizza_custo.toFixed(1)}</div>
-                `;
-            }
-
-            return `
-                <div class="bg-gray-50 border border-gray-200 rounded-lg p-5 transition-shadow hover:shadow-md">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <h3 class="font-bold text-lg text-gray-900">${review.restaurant_name}</h3>
-                            <div class="flex items-center gap-2 text-sm text-gray-600 mt-1">
-                                <span class="text-2xl">${userAvatars[review.user_name] || '👤'}</span>
-                                <span>${review.user_name}</span>
-                            </div>
-                        </div>
-                        <div class="text-right flex items-start gap-2">
-                            <div>
-                                <span class="font-bold text-2xl text-purple-600">${finalScore.toFixed(1)}</span>
-                                <span class="text-xs text-gray-500 block">NOTA FINAL</span>
-                            </div>
-                            <div class="flex flex-col gap-2">${actionButtonsHTML}</div>
-                        </div>
-                    </div>
-                    <p class="text-gray-700 my-4">${review.comment}</p>
-                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-2 bg-gray-100 rounded-md p-3 text-center text-xs sm:text-sm">
-                        ${ratingsHTML}
-                    </div>
-                </div>
-            `;
-        };
-
-        const renderRanking = () => {
-            const filteredReviews = allReviews.filter(r => r.category === currentCategory);
-            if (filteredReviews.length === 0) {
-                rankingList.innerHTML = `<p class="text-sm text-gray-500 text-center p-4">O ranking aparecerá aqui quando houver avaliações.</p>`;
-                return;
-            }
-
-            const restaurantScores = {};
-            filteredReviews.forEach(review => {
-                const normalizedName = review.restaurant_name.trim().toLowerCase();
-                if (!restaurantScores[normalizedName]) {
-                    restaurantScores[normalizedName] = { 
-                        originalName: review.restaurant_name.trim(),
-                        scores: [] 
-                    };
-                }
-                restaurantScores[normalizedName].scores.push(calculateFinalScore(review.ratings));
-            });
-
-            const rankedList = Object.values(restaurantScores).map(resto => {
-                const average = resto.scores.reduce((a, b) => a + b, 0) / resto.scores.length;
-                return { name: resto.originalName, averageScore: average };
-            }).sort((a, b) => b.averageScore - a.averageScore);
-
-            rankingList.innerHTML = rankedList.map((resto, index) => `
-                <div class="flex items-center justify-between bg-gray-50 p-3 rounded-lg">
-                    <div class="flex items-center gap-3">
-                        <span class="font-bold text-lg text-purple-600 w-6">${index + 1}.</span>
-                        <span class="font-semibold text-gray-800">${resto.name}</span>
-                    </div>
-                    <span class="font-bold text-purple-600">${resto.averageScore.toFixed(1)}</span>
-                </div>
-            `).join('');
-        };
-
-        const renderContent = () => {
-            const filteredReviews = allReviews.filter(r => r.category === currentCategory);
-            const sortedReviews = filteredReviews.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-            
-            if (sortedReviews.length > 0) {
-                reviewsFeed.innerHTML = sortedReviews.map(createReviewCardHTML).join('');
-            } else {
-                reviewsFeed.innerHTML = `<p class="text-sm text-gray-500 text-center p-4">Nenhuma avaliação foi feita ainda para esta categoria.</p>`;
-            }
-            
-            const count = sortedReviews.length;
-            totalReviewsCountEl.textContent = `${count} ${count === 1 ? 'avaliação registrada' : 'avaliações registradas'}`;
-
-            renderRanking();
-            addDeleteButtonListeners();
-            addEditButtonListeners();
-        };
-        
-        const addDeleteButtonListeners = () => {
-            document.querySelectorAll('.delete-btn').forEach(button => {
-                button.addEventListener('click', (e) => {
-                    const reviewIdToDelete = e.currentTarget.dataset.reviewId;
-                    handleDeleteReview(reviewIdToDelete);
-                });
-            });
-        };
-
-        const addEditButtonListeners = () => {
-            document.querySelectorAll('.edit-btn').forEach(button => {
-                button.addEventListener('click', (e) => {
-                    const reviewIdToEdit = e.currentTarget.dataset.reviewId;
-                    handleEditReview(reviewIdToEdit);
-                });
-            });
-        };
-
-        const handleDeleteReview = async (reviewId) => {
-            if (!reviewId) return;
-            const { error } = await supabaseClient
-                .from('reviews')
-                .delete()
-                .eq('id', reviewId);
-            
-            if (error) {
-                console.error("Erro ao apagar avaliação:", error);
-            }
-        };
-
-        const handleEditReview = (reviewId) => {
-            const reviewToEdit = allReviews.find(review => review.id == reviewId);
-            if (!reviewToEdit) return;
-
-            // Preenche o formulário
-            editReviewIdInput.value = reviewToEdit.id;
-            document.querySelector(`input[name="category"][value="${reviewToEdit.category}"]`).checked = true;
-            toggleCategoryFields(reviewToEdit.category);
-            
-            userNameSelect.value = reviewToEdit.user_name;
-            document.getElementById('restaurant-name').value = reviewToEdit.restaurant_name;
-            document.getElementById('comment').value = reviewToEdit.comment;
-            
-            for (const key in reviewToEdit.ratings) {
-                const inputEl = document.getElementById(`rating-${key}`);
-                if(inputEl) inputEl.value = reviewToEdit.ratings[key];
-            }
-
-            modalTitle.textContent = "Editar Avaliação";
-            submitBtn.textContent = "Salvar Alterações";
-            openModal();
-        };
-
-        const handleFormSubmit = async (event) => {
-            event.preventDefault();
-            
-            const selectedCategory = document.querySelector('input[name="category"]:checked').value;
-            const fields = selectedCategory === 'hamburguer' ? hamburguerFields : pizzaFields;
-            
-            let isFormValid = true;
-            formError.classList.add('hidden');
-            fields.querySelectorAll('.rating-input').forEach(input => {
-                input.classList.remove('border-red-500');
-                const value = parseFloat(input.value);
-                if (isNaN(value) || value > 10 || value < 0) {
-                    isFormValid = false;
-                    input.classList.add('border-red-500');
-                }
-            });
-
-            if (!isFormValid) {
-                formError.textContent = 'As notas devem ser um número entre 0 e 10.';
-                formError.classList.remove('hidden');
-                return;
-            }
-
-            let ratings = {};
-            if (selectedCategory === 'hamburguer') {
-                ratings = {
-                    hamburguer: parseFloat(document.getElementById('rating-hamburguer').value),
-                    pao: parseFloat(document.getElementById('rating-pao').value),
-                    equilibrio: parseFloat(document.getElementById('rating-equilibrio').value),
-                    acompanhamentos: parseFloat(document.getElementById('rating-acompanhamentos').value),
-                    atendimento: parseFloat(document.getElementById('rating-atendimento').value),
-                    ambiente: parseFloat(document.getElementById('rating-ambiente').value),
-                    cardapio: parseFloat(document.getElementById('rating-cardapio').value),
-                    tempo: parseFloat(document.getElementById('rating-tempo').value),
-                    custo: parseFloat(document.getElementById('rating-custo').value)
-                };
-            } else {
-                ratings = {
-                    massa: parseFloat(document.getElementById('rating-massa').value),
-                    molho: parseFloat(document.getElementById('rating-molho').value),
-                    queijo: parseFloat(document.getElementById('rating-queijo').value),
-                    cobertura: parseFloat(document.getElementById('rating-cobertura').value),
-                    pizza_equilibrio: parseFloat(document.getElementById('rating-pizza_equilibrio').value),
-                    pizza_atendimento: parseFloat(document.getElementById('rating-pizza_atendimento').value),
-                    pizza_ambiente: parseFloat(document.getElementById('rating-pizza_ambiente').value),
-                    pizza_cardapio: parseFloat(document.getElementById('rating-pizza_cardapio').value),
-                    pizza_tempo: parseFloat(document.getElementById('rating-pizza_tempo').value),
-                    pizza_custo: parseFloat(document.getElementById('rating-pizza_custo').value)
-                };
-            }
-
-            const reviewData = {
-                author_id: currentUserId,
-                user_name: userNameSelect.value,
-                restaurant_name: document.getElementById('restaurant-name').value.trim(),
-                ratings: ratings,
-                comment: document.getElementById('comment').value,
-                category: selectedCategory
-            };
-
-            const editingId = editReviewIdInput.value;
-            let error;
-
-            if (editingId) {
-                const { error: updateError } = await supabaseClient.from('reviews').update(reviewData).eq('id', editingId);
-                error = updateError;
-            } else {
-                const { error: insertError } = await supabaseClient.from('reviews').insert([reviewData]);
-                error = insertError;
-            }
-            
-            if (error) {
-                console.error("Erro ao salvar avaliação:", error);
-                formError.textContent = "Erro ao salvar. Tente novamente.";
-                formError.classList.remove('hidden');
-            } else {
-                reviewForm.reset();
-                closeModal();
-            }
-        };
-
-        // --- LISTENER DO SUPABASE ---
-        async function fetchAndRenderReviews() {
-            const { data, error } = await supabaseClient.from('reviews').select('*');
-            if (error) {
-                console.error("Erro ao buscar avaliações:", error);
-                loadingOverlay.innerHTML = "<p class='text-red-500'>Erro ao carregar dados.</p>";
-            } else {
-                allReviews = data;
-                renderContent();
-                loadingOverlay.classList.add('hidden');
-            }
-        }
-
-        function toggleCategoryFields(category) {
-            if (category === 'hamburguer') {
-                hamburguerFields.classList.remove('hidden');
-                pizzaFields.classList.add('hidden');
-                pizzaFields.querySelectorAll('input').forEach(i => i.required = false);
-                hamburguerFields.querySelectorAll('input').forEach(i => i.required = true);
-            } else {
-                hamburguerFields.classList.add('hidden');
-                pizzaFields.classList.remove('hidden');
-                hamburguerFields.querySelectorAll('input').forEach(i => i.required = false);
-                pizzaFields.querySelectorAll('input').forEach(i => i.required = true);
-            }
-        }
-
-        // --- INICIALIZAÇÃO E REALTIME ---
-        fetchAndRenderReviews();
-
-        supabaseClient.channel('public:reviews')
-          .on('postgres_changes', { event: '*', schema: 'public', table: 'reviews' }, payload => {
-            fetchAndRenderReviews();
-          })
-          .subscribe();
-
-        const openModal = () => {
-            formError.classList.add('hidden');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            setTimeout(() => { modalPanel.classList.remove('scale-95', 'opacity-0'); }, 50);
-        };
-
-        const closeModal = () => {
-            modalPanel.classList.add('scale-95', 'opacity-0');
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                modal.classList.remove('flex');
-                reviewForm.reset();
-                editReviewIdInput.value = '';
-                modalTitle.textContent = "Sua Avaliação";
-                submitBtn.textContent = "Publicar";
-                toggleCategoryFields('hamburguer');
-            }, 200);
-        };
-
-        // --- EVENT LISTENERS ---
-        reviewForm.addEventListener('submit', handleFormSubmit);
-        openModalBtn.addEventListener('click', () => {
-            editReviewIdInput.value = '';
-            modalTitle.textContent = "Sua Avaliação";
-            submitBtn.textContent = "Publicar";
-            toggleCategoryFields(currentCategory);
-            document.querySelector(`input[name="category"][value="${currentCategory}"]`).checked = true;
-            openModal();
-        });
-        closeModalBtn.addEventListener('click', closeModal);
-        modal.addEventListener('click', (e) => {
-            if (e.target.classList.contains('modal-backdrop')) {
-                closeModal();
-            }
-        });
-        categoryTabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                currentCategory = tab.dataset.category;
-                categoryTabs.forEach(t => t.classList.remove('tab-active', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300'));
-                categoryTabs.forEach(t => {
-                    if (t.dataset.category === currentCategory) {
-                        t.classList.add('tab-active');
-                    } else {
-                        t.classList.add('text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
-                    }
-                });
-                renderContent();
-            });
-        });
-        categoryRadios.forEach(radio => {
-            radio.addEventListener('change', (e) => {
-                toggleCategoryFields(e.target.value);
-            });
-        });
-    </script>
-</body>
-</html>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="
