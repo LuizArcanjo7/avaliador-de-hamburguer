@@ -211,68 +211,421 @@
 
     <!-- Supabase Logic -->
     <script type="module">
-        const { createClient } = supabase;
+        document.addEventListener('DOMContentLoaded', () => {
+            const { createClient } = supabase;
 
-        const SUPABASE_URL = 'https://pwkupqqwcbixfwbxcnpa.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB3a3VwcXF3Y2JpeGZ3YnhjbnBhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYxMjI5MzQsImV4cCI6MjA3MTY5ODkzNH0.nI5x2tGh6uNgmjjdsoAfrKE0gCMbwSqkIqA3FQQlVaI';
+            const SUPABASE_URL = 'https://pwkupqqwcbixfwbxcnpa.supabase.co';
+            const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB3a3VwcXF3Y2JpeGZ3YnhjbnBhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYxMjI5MzQsImV4cCI6MjA3MTY5ODkzNH0.nI5x2tGh6uNgmjjdsoAfrKE0gCMbwSqkIqA3FQQlVaI';
 
-        const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // --- ELEMENTOS DO DOM ---
-        const reviewsFeed = document.getElementById('reviews-feed');
-        const rankingList = document.getElementById('ranking-list');
-        const reviewForm = document.getElementById('review-form');
-        const modal = document.getElementById('reviewModal');
-        const modalPanel = document.getElementById('modal-panel');
-        const openModalBtn = document.getElementById('openModalBtn');
-        const closeModalBtn = document.getElementById('closeModalBtn');
-        const formError = document.getElementById('form-error');
-        const loadingOverlay = document.getElementById('loading-overlay');
-        const userNameSelect = document.getElementById('user-name');
-        const modalTitle = document.getElementById('modal-title');
-        const submitBtn = document.getElementById('submit-btn');
-        const editReviewIdInput = document.getElementById('edit-review-id');
-        const totalReviewsCountEl = document.getElementById('total-reviews-count');
-        const categoryTabs = document.querySelectorAll('.category-tab');
-        const categoryRadios = document.querySelectorAll('input[name="category"]');
-        const hamburguerFields = document.getElementById('hamburguer-fields');
-        const pizzaFields = document.getElementById('pizza-fields');
+            // --- ELEMENTOS DO DOM ---
+            const reviewsFeed = document.getElementById('reviews-feed');
+            const rankingList = document.getElementById('ranking-list');
+            const reviewForm = document.getElementById('review-form');
+            const modal = document.getElementById('reviewModal');
+            const modalPanel = document.getElementById('modal-panel');
+            const openModalBtn = document.getElementById('openModalBtn');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            const formError = document.getElementById('form-error');
+            const loadingOverlay = document.getElementById('loading-overlay');
+            const userNameSelect = document.getElementById('user-name');
+            const modalTitle = document.getElementById('modal-title');
+            const submitBtn = document.getElementById('submit-btn');
+            const editReviewIdInput = document.getElementById('edit-review-id');
+            const totalReviewsCountEl = document.getElementById('total-reviews-count');
+            const categoryTabs = document.querySelectorAll('.category-tab');
+            const categoryRadios = document.querySelectorAll('input[name="category"]');
+            const hamburguerFields = document.getElementById('hamburguer-fields');
+            const pizzaFields = document.getElementById('pizza-fields');
 
-        let allReviews = [];
-        let currentCategory = 'hamburguer';
+            let allReviews = [];
+            let currentCategory = 'hamburguer';
 
-        // --- DADOS LOCAIS (AVATARES) ---
-        const userAvatars = {
-            'Arcanjo': '🧑‍🍳', 'Luana': '👩‍💻', 'Michel': '👨‍🎨', 'Julia': '👩‍💼',
-            'Beatriz': '🧑‍🚀', 'Willian': '👨‍🔬', 'Manu': '👩‍🎨', 'Victor': '👨‍💻',
-            'Tirras': '🧑‍🍳', 'Kyvia': '👩‍🚀', 'Clévio': '👨‍🔬',
-        };
-        
-        // --- GESTÃO DE UTILIZADOR ANÓNIMO ---
-        function getAnonymousUserId() {
-            let userId = localStorage.getItem('anonymousUserId');
-            if (!userId) {
-                userId = crypto.randomUUID();
-                localStorage.setItem('anonymousUserId', userId);
+            // --- DADOS LOCAIS (AVATARES) ---
+            const userAvatars = {
+                'Arcanjo': '🧑‍🍳', 'Luana': '👩‍💻', 'Michel': '👨‍🎨', 'Julia': '👩‍💼',
+                'Beatriz': '🧑‍🚀', 'Willian': '👨‍🔬', 'Manu': '👩‍🎨', 'Victor': '👨‍💻',
+                'Tirras': '🧑‍🍳', 'Kyvia': '👩‍🚀', 'Clévio': '👨‍🔬',
+            };
+            
+            // --- GESTÃO DE UTILIZADOR ANÓNIMO ---
+            function getAnonymousUserId() {
+                let userId = localStorage.getItem('anonymousUserId');
+                if (!userId) {
+                    userId = crypto.randomUUID();
+                    localStorage.setItem('anonymousUserId', userId);
+                }
+                return userId;
             }
-            return userId;
-        }
 
-        const currentUserId = getAnonymousUserId();
+            const currentUserId = getAnonymousUserId();
 
-        // --- FUNÇÕES ---
-        const calculateFinalScore = (ratings) => {
-            const scores = Object.values(ratings);
-            const sum = scores.reduce((acc, score) => acc + score, 0);
-            return sum / scores.length;
-        };
-        
-        const createReviewCardHTML = (review) => {
-            const finalScore = calculateFinalScore(review.ratings);
+            // --- FUNÇÕES ---
+            const calculateFinalScore = (ratings) => {
+                const scores = Object.values(ratings);
+                const sum = scores.reduce((acc, score) => acc + score, 0);
+                return sum / scores.length;
+            };
+            
+            const createReviewCardHTML = (review) => {
+                const finalScore = calculateFinalScore(review.ratings);
 
-            const actionButtonsHTML = `
-                <button data-review-id="${review.id}" class="edit-btn text-gray-400 hover:text-blue-500 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
-                </button>
-                <button data-review-id="${review.id}" class="delete-btn text-gray-400 hover:text-red-500 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="
+                const actionButtonsHTML = `
+                    <button data-review-id="${review.id}" class="edit-btn text-gray-400 hover:text-blue-500 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+                    </button>
+                    <button data-review-id="${review.id}" class="delete-btn text-gray-400 hover:text-red-500 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                    </button>
+                `;
+                
+                let ratingsHTML = '';
+                if (review.category === 'hamburguer') {
+                    ratingsHTML = `
+                        <div><span class="font-semibold block sm:inline">Hambúrguer:</span> ${review.ratings.hamburguer.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Pão:</span> ${review.ratings.pao.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Equilíbrio:</span> ${review.ratings.equilibrio.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Acompanh.:</span> ${review.ratings.acompanhamentos.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Atendimento:</span> ${review.ratings.atendimento.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Ambiente:</span> ${review.ratings.ambiente.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Cardápio:</span> ${review.ratings.cardapio.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Tempo:</span> ${review.ratings.tempo.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Custo:</span> ${review.ratings.custo.toFixed(1)}</div>
+                    `;
+                } else if (review.category === 'pizza') {
+                     ratingsHTML = `
+                        <div><span class="font-semibold block sm:inline">Massa:</span> ${review.ratings.massa.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Molho:</span> ${review.ratings.molho.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Queijo:</span> ${review.ratings.queijo.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Cobertura:</span> ${review.ratings.cobertura.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Equilíbrio:</span> ${review.ratings.pizza_equilibrio.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Atendimento:</span> ${review.ratings.pizza_atendimento.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Ambiente:</span> ${review.ratings.pizza_ambiente.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Cardápio:</span> ${review.ratings.pizza_cardapio.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Tempo:</span> ${review.ratings.pizza_tempo.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Custo:</span> ${review.ratings.pizza_custo.toFixed(1)}</div>
+                    `;
+                }
+                
+                let diferencialHTML = '';
+                if (review.category === 'pizza' && review.diferencial) {
+                    diferencialHTML = `
+                        <div class="mt-4 pt-4 border-t border-gray-200 col-span-full">
+                            <h4 class="font-semibold text-sm text-gray-800">Diferencial:</h4>
+                            <p class="text-gray-700 text-sm whitespace-pre-wrap">${review.diferencial}</p>
+                        </div>
+                    `;
+                }
+
+                return `
+                    <div class="bg-gray-50 border border-gray-200 rounded-lg p-5 transition-shadow hover:shadow-md">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="font-bold text-lg text-gray-900">${review.restaurant_name}</h3>
+                                <div class="flex items-center gap-2 text-sm text-gray-600 mt-1">
+                                    <span class="text-2xl">${userAvatars[review.user_name] || '👤'}</span>
+                                    <span>${review.user_name}</span>
+                                </div>
+                            </div>
+                            <div class="text-right flex items-start gap-2">
+                                <div>
+                                    <span class="font-bold text-2xl text-purple-600">${finalScore.toFixed(1)}</span>
+                                    <span class="text-xs text-gray-500 block">NOTA FINAL</span>
+                                </div>
+                                <div class="flex flex-col gap-2">${actionButtonsHTML}</div>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 my-4 whitespace-pre-wrap">${review.comment}</p>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-2 bg-gray-100 rounded-md p-3 text-center text-xs sm:text-sm">
+                            ${ratingsHTML}
+                        </div>
+                        ${diferencialHTML}
+                    </div>
+                `;
+            };
+
+            const renderRanking = () => {
+                const filteredReviews = allReviews.filter(r => r.category === currentCategory);
+                if (filteredReviews.length === 0) {
+                    rankingList.innerHTML = `<p class="text-sm text-gray-500 text-center p-4">O ranking aparecerá aqui quando houver avaliações.</p>`;
+                    return;
+                }
+
+                const restaurantScores = {};
+                filteredReviews.forEach(review => {
+                    const normalizedName = review.restaurant_name.trim().toLowerCase();
+                    if (!restaurantScores[normalizedName]) {
+                        restaurantScores[normalizedName] = { 
+                            originalName: review.restaurant_name.trim(),
+                            scores: [] 
+                        };
+                    }
+                    restaurantScores[normalizedName].scores.push(calculateFinalScore(review.ratings));
+                });
+
+                const rankedList = Object.values(restaurantScores).map(resto => {
+                    const average = resto.scores.reduce((a, b) => a + b, 0) / resto.scores.length;
+                    return { name: resto.originalName, averageScore: average };
+                }).sort((a, b) => b.averageScore - a.averageScore);
+
+                rankingList.innerHTML = rankedList.map((resto, index) => `
+                    <div class="flex items-center justify-between bg-gray-50 p-3 rounded-lg">
+                        <div class="flex items-center gap-3">
+                            <span class="font-bold text-lg text-purple-600 w-6">${index + 1}.</span>
+                            <span class="font-semibold text-gray-800">${resto.name}</span>
+                        </div>
+                        <span class="font-bold text-purple-600">${resto.averageScore.toFixed(1)}</span>
+                    </div>
+                `).join('');
+            };
+
+            const renderContent = () => {
+                const filteredReviews = allReviews.filter(r => r.category === currentCategory);
+                const sortedReviews = filteredReviews.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                
+                if (sortedReviews.length > 0) {
+                    reviewsFeed.innerHTML = sortedReviews.map(createReviewCardHTML).join('');
+                } else {
+                    reviewsFeed.innerHTML = `<p class="text-sm text-gray-500 text-center p-4">Nenhuma avaliação foi feita ainda para esta categoria.</p>`;
+                }
+                
+                const count = sortedReviews.length;
+                totalReviewsCountEl.textContent = `${count} ${count === 1 ? 'avaliação registrada' : 'avaliações registradas'}`;
+
+                renderRanking();
+                addDeleteButtonListeners();
+                addEditButtonListeners();
+            };
+            
+            const addDeleteButtonListeners = () => {
+                document.querySelectorAll('.delete-btn').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const reviewIdToDelete = e.currentTarget.dataset.reviewId;
+                        handleDeleteReview(reviewIdToDelete);
+                    });
+                });
+            };
+
+            const addEditButtonListeners = () => {
+                document.querySelectorAll('.edit-btn').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const reviewIdToEdit = e.currentTarget.dataset.reviewId;
+                        handleEditReview(reviewIdToEdit);
+                    });
+                });
+            };
+
+            const handleDeleteReview = async (reviewId) => {
+                if (!reviewId) return;
+                const { error } = await supabaseClient
+                    .from('reviews')
+                    .delete()
+                    .eq('id', reviewId);
+                
+                if (error) {
+                    console.error("Erro ao apagar avaliação:", error);
+                }
+            };
+
+            const handleEditReview = (reviewId) => {
+                const reviewToEdit = allReviews.find(review => review.id == reviewId);
+                if (!reviewToEdit) return;
+
+                // Preenche o formulário
+                editReviewIdInput.value = reviewToEdit.id;
+                document.querySelector(`input[name="category"][value="${reviewToEdit.category}"]`).checked = true;
+                toggleCategoryFields(reviewToEdit.category);
+                
+                userNameSelect.value = reviewToEdit.user_name;
+                document.getElementById('restaurant-name').value = reviewToEdit.restaurant_name;
+                document.getElementById('comment').value = reviewToEdit.comment;
+                document.getElementById('diferencial').value = reviewToEdit.diferencial || '';
+                
+                for (const key in reviewToEdit.ratings) {
+                    const inputEl = document.getElementById(`rating-${key}`);
+                    if(inputEl) inputEl.value = reviewToEdit.ratings[key];
+                }
+
+                modalTitle.textContent = "Editar Avaliação";
+                submitBtn.textContent = "Salvar Alterações";
+                openModal();
+            };
+
+            const handleFormSubmit = async (event) => {
+                event.preventDefault();
+                
+                const selectedCategory = document.querySelector('input[name="category"]:checked').value;
+                const fields = selectedCategory === 'hamburguer' ? hamburguerFields : pizzaFields;
+                
+                let isFormValid = true;
+                formError.classList.add('hidden');
+                fields.querySelectorAll('.rating-input').forEach(input => {
+                    input.classList.remove('border-red-500');
+                    const value = parseFloat(input.value);
+                    if (isNaN(value) || value > 10 || value < 0) {
+                        isFormValid = false;
+                        input.classList.add('border-red-500');
+                    }
+                });
+
+                if (!isFormValid) {
+                    formError.textContent = 'As notas devem ser um número entre 0 e 10.';
+                    formError.classList.remove('hidden');
+                    return;
+                }
+
+                let ratings = {};
+                if (selectedCategory === 'hamburguer') {
+                    ratings = {
+                        hamburguer: parseFloat(document.getElementById('rating-hamburguer').value),
+                        pao: parseFloat(document.getElementById('rating-pao').value),
+                        equilibrio: parseFloat(document.getElementById('rating-equilibrio').value),
+                        acompanhamentos: parseFloat(document.getElementById('rating-acompanhamentos').value),
+                        atendimento: parseFloat(document.getElementById('rating-atendimento').value),
+                        ambiente: parseFloat(document.getElementById('rating-ambiente').value),
+                        cardapio: parseFloat(document.getElementById('rating-cardapio').value),
+                        tempo: parseFloat(document.getElementById('rating-tempo').value),
+                        custo: parseFloat(document.getElementById('rating-custo').value)
+                    };
+                } else {
+                    ratings = {
+                        massa: parseFloat(document.getElementById('rating-massa').value),
+                        molho: parseFloat(document.getElementById('rating-molho').value),
+                        queijo: parseFloat(document.getElementById('rating-queijo').value),
+                        cobertura: parseFloat(document.getElementById('rating-cobertura').value),
+                        pizza_equilibrio: parseFloat(document.getElementById('rating-pizza_equilibrio').value),
+                        pizza_atendimento: parseFloat(document.getElementById('rating-pizza_atendimento').value),
+                        pizza_ambiente: parseFloat(document.getElementById('rating-pizza_ambiente').value),
+                        pizza_cardapio: parseFloat(document.getElementById('rating-pizza_cardapio').value),
+                        pizza_tempo: parseFloat(document.getElementById('rating-pizza_tempo').value),
+                        pizza_custo: parseFloat(document.getElementById('rating-pizza_custo').value)
+                    };
+                }
+
+                const reviewData = {
+                    author_id: currentUserId,
+                    user_name: userNameSelect.value,
+                    restaurant_name: document.getElementById('restaurant-name').value.trim(),
+                    ratings: ratings,
+                    comment: document.getElementById('comment').value,
+                    category: selectedCategory,
+                    diferencial: selectedCategory === 'pizza' ? document.getElementById('diferencial').value : null,
+                };
+
+                const editingId = editReviewIdInput.value;
+                let error;
+
+                if (editingId) {
+                    const { error: updateError } = await supabaseClient.from('reviews').update(reviewData).eq('id', editingId);
+                    error = updateError;
+                } else {
+                    const { error: insertError } = await supabaseClient.from('reviews').insert([reviewData]);
+                    error = insertError;
+                }
+                
+                if (error) {
+                    console.error("Erro ao salvar avaliação:", error);
+                    formError.textContent = "Erro ao salvar. Tente novamente.";
+                    formError.classList.remove('hidden');
+                } else {
+                    reviewForm.reset();
+                    closeModal();
+                }
+            };
+
+            // --- LISTENER DO SUPABASE ---
+            async function fetchAndRenderReviews() {
+                const { data, error } = await supabaseClient.from('reviews').select('*');
+                if (error) {
+                    console.error("Erro ao buscar avaliações:", error);
+                    loadingOverlay.innerHTML = "<p class='text-red-500'>Erro ao carregar dados.</p>";
+                } else {
+                    allReviews = data;
+                    renderContent();
+                    loadingOverlay.classList.add('hidden');
+                }
+            }
+
+            function toggleCategoryFields(category) {
+                if (category === 'hamburguer') {
+                    hamburguerFields.classList.remove('hidden');
+                    pizzaFields.classList.add('hidden');
+                    pizzaFields.querySelectorAll('input, textarea').forEach(i => i.required = false);
+                    hamburguerFields.querySelectorAll('input').forEach(i => i.required = true);
+                } else {
+                    hamburguerFields.classList.add('hidden');
+                    pizzaFields.classList.remove('hidden');
+                    hamburguerFields.querySelectorAll('input').forEach(i => i.required = false);
+                    pizzaFields.querySelectorAll('input').forEach(i => i.required = true);
+                }
+            }
+
+            // --- INICIALIZAÇÃO E REALTIME ---
+            fetchAndRenderReviews();
+
+            supabaseClient.channel('public:reviews')
+              .on('postgres_changes', { event: '*', schema: 'public', table: 'reviews' }, payload => {
+                fetchAndRenderReviews();
+              })
+              .subscribe();
+
+            const openModal = () => {
+                formError.classList.add('hidden');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                setTimeout(() => { modalPanel.classList.remove('scale-95', 'opacity-0'); }, 50);
+            };
+
+            const closeModal = () => {
+                modalPanel.classList.add('scale-95', 'opacity-0');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    modal.classList.remove('flex');
+                    reviewForm.reset();
+                    editReviewIdInput.value = '';
+                    modalTitle.textContent = "Sua Avaliação";
+                    submitBtn.textContent = "Publicar";
+                    toggleCategoryFields('hamburguer');
+                }, 200);
+            };
+
+            // --- EVENT LISTENERS ---
+            reviewForm.addEventListener('submit', handleFormSubmit);
+            openModalBtn.addEventListener('click', () => {
+                editReviewIdInput.value = '';
+                modalTitle.textContent = "Sua Avaliação";
+                submitBtn.textContent = "Publicar";
+                toggleCategoryFields(currentCategory);
+                document.querySelector(`input[name="category"][value="${currentCategory}"]`).checked = true;
+                openModal();
+            });
+            closeModalBtn.addEventListener('click', closeModal);
+            modal.addEventListener('click', (e) => {
+                if (e.target.classList.contains('modal-backdrop')) {
+                    closeModal();
+                }
+            });
+            categoryTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    currentCategory = tab.dataset.category;
+                    categoryTabs.forEach(t => t.classList.remove('tab-active', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300'));
+                    categoryTabs.forEach(t => {
+                        if (t.dataset.category === currentCategory) {
+                            t.classList.add('tab-active');
+                        } else {
+                            t.classList.add('text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
+                        }
+                    });
+                    renderContent();
+                });
+            });
+            categoryRadios.forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    toggleCategoryFields(e.target.value);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
