@@ -38,6 +38,11 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        .tab-active {
+            border-color: #8b5cf6;
+            color: #8b5cf6;
+            background-color: #f5f3ff;
+        }
     </style>
 </head>
 <body class="antialiased text-gray-800">
@@ -54,13 +59,23 @@
         <header class="flex flex-col sm:flex-row justify-between items-center mb-8 pb-4 border-b border-gray-200">
             <div>
                 <h1 class="text-3xl font-bold text-gray-900">Imagem & Degustação</h1>
-                <p class="text-gray-500 mt-1">Suas avaliações de hambúrgueres em um só lugar.</p>
+                <p class="text-gray-500 mt-1">Suas avaliações de comidas em um só lugar.</p>
             </div>
             <button id="openModalBtn" class="mt-4 sm:mt-0 w-full sm:w-auto flex items-center justify-center gap-2 bg-purple-600 text-white font-semibold py-2 px-5 rounded-lg shadow-md hover:bg-purple-700 transition-all duration-300">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
                 Nova Avaliação
             </button>
         </header>
+
+        <!-- Category Tabs -->
+        <div class="mb-6">
+            <div class="border-b border-gray-200">
+                <nav class="-mb-px flex space-x-6" aria-label="Tabs">
+                    <button data-category="hamburguer" class="category-tab whitespace-nowrap py-3 px-1 border-b-2 font-medium text-sm tab-active">Hambúrgueres</button>
+                    <button data-category="pizza" class="category-tab whitespace-nowrap py-3 px-1 border-b-2 font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">Pizzas</button>
+                </nav>
+            </div>
+        </div>
 
         <!-- Main Content Grid -->
         <main class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -103,6 +118,21 @@
                 <input type="hidden" id="edit-review-id">
 
                 <div class="space-y-5">
+                    <!-- Category Selector -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">O que você está avaliando?</label>
+                        <div class="flex gap-4">
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="radio" name="category" value="hamburguer" class="form-radio h-4 w-4 text-purple-600" checked>
+                                <span class="text-sm font-medium text-gray-700">Hambúrguer</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="radio" name="category" value="pizza" class="form-radio h-4 w-4 text-purple-600">
+                                <span class="text-sm font-medium text-gray-700">Pizza</span>
+                            </label>
+                        </div>
+                    </div>
+
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label for="user-name" class="block text-sm font-medium text-gray-700 mb-1">Seu Nome</label>
@@ -121,50 +151,42 @@
                             </select>
                         </div>
                         <div>
-                            <label for="restaurant-name" class="block text-sm font-medium text-gray-700 mb-1">Nome da Hamburgueria</label>
+                            <label for="restaurant-name" class="block text-sm font-medium text-gray-700 mb-1">Nome do Estabelecimento</label>
                             <input type="text" id="restaurant-name" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required>
                         </div>
                     </div>
                     
-                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-5">
-                        <!-- Critérios de Avaliação -->
+                    <!-- Hamburguer Fields -->
+                    <div id="hamburguer-fields" class="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-5">
                         <div>
                             <label for="rating-hamburguer" class="block text-sm font-medium text-gray-700 mb-1">Hambúrguer</label>
                             <input type="number" id="rating-hamburguer" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required>
                         </div>
-                        <div>
-                            <label for="rating-pao" class="block text-sm font-medium text-gray-700 mb-1">Pão</label>
-                            <input type="number" id="rating-pao" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required>
-                        </div>
-                        <div>
-                            <label for="rating-equilibrio" class="block text-sm font-medium text-gray-700 mb-1">Equilíbrio</label>
-                            <input type="number" id="rating-equilibrio" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required>
-                        </div>
-                        <div>
-                            <label for="rating-acompanhamentos" class="block text-sm font-medium text-gray-700 mb-1">Acompanh.</label>
-                            <input type="number" id="rating-acompanhamentos" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required>
-                        </div>
-                        <div>
-                            <label for="rating-atendimento" class="block text-sm font-medium text-gray-700 mb-1">Atendimento</label>
-                            <input type="number" id="rating-atendimento" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required>
-                        </div>
-                        <div>
-                            <label for="rating-ambiente" class="block text-sm font-medium text-gray-700 mb-1">Ambiente</label>
-                            <input type="number" id="rating-ambiente" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required>
-                        </div>
-                        <div>
-                            <label for="rating-cardapio" class="block text-sm font-medium text-gray-700 mb-1">Cardápio</label>
-                            <input type="number" id="rating-cardapio" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required>
-                        </div>
-                        <div>
-                            <label for="rating-tempo" class="block text-sm font-medium text-gray-700 mb-1">Tempo de Espera</label>
-                            <input type="number" id="rating-tempo" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required>
-                        </div>
-                        <div>
-                            <label for="rating-custo" class="block text-sm font-medium text-gray-700 mb-1">Custo-Benefício</label>
-                            <input type="number" id="rating-custo" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required>
-                        </div>
+                        <!-- ... (outros campos de hambúrguer) ... -->
+                        <div><label for="rating-pao" class="block text-sm font-medium text-gray-700 mb-1">Pão</label><input type="number" id="rating-pao" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required></div>
+                        <div><label for="rating-equilibrio" class="block text-sm font-medium text-gray-700 mb-1">Equilíbrio</label><input type="number" id="rating-equilibrio" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required></div>
+                        <div><label for="rating-acompanhamentos" class="block text-sm font-medium text-gray-700 mb-1">Acompanh.</label><input type="number" id="rating-acompanhamentos" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required></div>
+                        <div><label for="rating-atendimento" class="block text-sm font-medium text-gray-700 mb-1">Atendimento</label><input type="number" id="rating-atendimento" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required></div>
+                        <div><label for="rating-ambiente" class="block text-sm font-medium text-gray-700 mb-1">Ambiente</label><input type="number" id="rating-ambiente" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required></div>
+                        <div><label for="rating-cardapio" class="block text-sm font-medium text-gray-700 mb-1">Cardápio</label><input type="number" id="rating-cardapio" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required></div>
+                        <div><label for="rating-tempo" class="block text-sm font-medium text-gray-700 mb-1">Tempo</label><input type="number" id="rating-tempo" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required></div>
+                        <div><label for="rating-custo" class="block text-sm font-medium text-gray-700 mb-1">Custo</label><input type="number" id="rating-custo" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required></div>
                     </div>
+
+                    <!-- Pizza Fields -->
+                    <div id="pizza-fields" class="hidden grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-5">
+                        <div><label for="rating-massa" class="block text-sm font-medium text-gray-700 mb-1">Massa</label><input type="number" id="rating-massa" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
+                        <div><label for="rating-molho" class="block text-sm font-medium text-gray-700 mb-1">Molho</label><input type="number" id="rating-molho" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
+                        <div><label for="rating-queijo" class="block text-sm font-medium text-gray-700 mb-1">Queijo</label><input type="number" id="rating-queijo" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
+                        <div><label for="rating-cobertura" class="block text-sm font-medium text-gray-700 mb-1">Cobertura</label><input type="number" id="rating-cobertura" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
+                        <div><label for="rating-pizza_equilibrio" class="block text-sm font-medium text-gray-700 mb-1">Equilíbrio</label><input type="number" id="rating-pizza_equilibrio" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
+                        <div><label for="rating-pizza_atendimento" class="block text-sm font-medium text-gray-700 mb-1">Atendimento</label><input type="number" id="rating-pizza_atendimento" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
+                        <div><label for="rating-pizza_ambiente" class="block text-sm font-medium text-gray-700 mb-1">Ambiente</label><input type="number" id="rating-pizza_ambiente" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
+                        <div><label for="rating-pizza_cardapio" class="block text-sm font-medium text-gray-700 mb-1">Cardápio</label><input type="number" id="rating-pizza_cardapio" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
+                        <div><label for="rating-pizza_tempo" class="block text-sm font-medium text-gray-700 mb-1">Tempo</label><input type="number" id="rating-pizza_tempo" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
+                        <div><label for="rating-pizza_custo" class="block text-sm font-medium text-gray-700 mb-1">Custo</label><input type="number" id="rating-pizza_custo" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
+                    </div>
+
                     <div>
                         <label for="comment" class="block text-sm font-medium text-gray-700 mb-1">Comentário</label>
                         <textarea id="comment" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" placeholder="Descreva sua experiência..." required></textarea>
@@ -183,7 +205,6 @@
     <script type="module">
         const { createClient } = supabase;
 
-        // IMPORTANTE: Cole a sua URL e a sua chave ANON aqui
         const SUPABASE_URL = 'https://pwkupqqwcbixfwbxcnpa.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB3a3VwcXF3Y2JpeGZ3YnhjbnBhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYxMjI5MzQsImV4cCI6MjA3MTY5ODkzNH0.nI5x2tGh6uNgmjjdsoAfrKE0gCMbwSqkIqA3FQQlVaI';
 
@@ -205,8 +226,13 @@
         const submitBtn = document.getElementById('submit-btn');
         const editReviewIdInput = document.getElementById('edit-review-id');
         const totalReviewsCountEl = document.getElementById('total-reviews-count');
+        const categoryTabs = document.querySelectorAll('.category-tab');
+        const categoryRadios = document.querySelectorAll('input[name="category"]');
+        const hamburguerFields = document.getElementById('hamburguer-fields');
+        const pizzaFields = document.getElementById('pizza-fields');
 
-        let allReviews = []; // Cache local das avaliações
+        let allReviews = [];
+        let currentCategory = 'hamburguer';
 
         // --- DADOS LOCAIS (AVATARES) ---
         const userAvatars = {
@@ -226,7 +252,6 @@
         }
 
         const currentUserId = getAnonymousUserId();
-        console.log("ID de Utilizador Anónimo:", currentUserId);
 
         // --- FUNÇÕES ---
         const calculateFinalScore = (ratings) => {
@@ -234,7 +259,7 @@
             const sum = scores.reduce((acc, score) => acc + score, 0);
             return sum / scores.length;
         };
-
+        
         const createReviewCardHTML = (review) => {
             const finalScore = calculateFinalScore(review.ratings);
 
@@ -246,6 +271,34 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
                 </button>
             `;
+            
+            let ratingsHTML = '';
+            if (review.category === 'hamburguer') {
+                ratingsHTML = `
+                    <div><span class="font-semibold block sm:inline">Hambúrguer:</span> ${review.ratings.hamburguer.toFixed(1)}</div>
+                    <div><span class="font-semibold block sm:inline">Pão:</span> ${review.ratings.pao.toFixed(1)}</div>
+                    <div><span class="font-semibold block sm:inline">Equilíbrio:</span> ${review.ratings.equilibrio.toFixed(1)}</div>
+                    <div><span class="font-semibold block sm:inline">Acompanh.:</span> ${review.ratings.acompanhamentos.toFixed(1)}</div>
+                    <div><span class="font-semibold block sm:inline">Atendimento:</span> ${review.ratings.atendimento.toFixed(1)}</div>
+                    <div><span class="font-semibold block sm:inline">Ambiente:</span> ${review.ratings.ambiente.toFixed(1)}</div>
+                    <div><span class="font-semibold block sm:inline">Cardápio:</span> ${review.ratings.cardapio.toFixed(1)}</div>
+                    <div><span class="font-semibold block sm:inline">Tempo:</span> ${review.ratings.tempo.toFixed(1)}</div>
+                    <div><span class="font-semibold block sm:inline">Custo:</span> ${review.ratings.custo.toFixed(1)}</div>
+                `;
+            } else if (review.category === 'pizza') {
+                 ratingsHTML = `
+                    <div><span class="font-semibold block sm:inline">Massa:</span> ${review.ratings.massa.toFixed(1)}</div>
+                    <div><span class="font-semibold block sm:inline">Molho:</span> ${review.ratings.molho.toFixed(1)}</div>
+                    <div><span class="font-semibold block sm:inline">Queijo:</span> ${review.ratings.queijo.toFixed(1)}</div>
+                    <div><span class="font-semibold block sm:inline">Cobertura:</span> ${review.ratings.cobertura.toFixed(1)}</div>
+                    <div><span class="font-semibold block sm:inline">Equilíbrio:</span> ${review.ratings.pizza_equilibrio.toFixed(1)}</div>
+                    <div><span class="font-semibold block sm:inline">Atendimento:</span> ${review.ratings.pizza_atendimento.toFixed(1)}</div>
+                    <div><span class="font-semibold block sm:inline">Ambiente:</span> ${review.ratings.pizza_ambiente.toFixed(1)}</div>
+                    <div><span class="font-semibold block sm:inline">Cardápio:</span> ${review.ratings.pizza_cardapio.toFixed(1)}</div>
+                    <div><span class="font-semibold block sm:inline">Tempo:</span> ${review.ratings.pizza_tempo.toFixed(1)}</div>
+                    <div><span class="font-semibold block sm:inline">Custo:</span> ${review.ratings.pizza_custo.toFixed(1)}</div>
+                `;
+            }
 
             return `
                 <div class="bg-gray-50 border border-gray-200 rounded-lg p-5 transition-shadow hover:shadow-md">
@@ -266,34 +319,26 @@
                         </div>
                     </div>
                     <p class="text-gray-700 my-4">${review.comment}</p>
-                    <div class="grid grid-cols-3 gap-x-4 gap-y-2 bg-gray-100 rounded-md p-3 text-center text-xs sm:text-sm">
-                        <div><span class="font-semibold block sm:inline">Hambúrguer:</span> ${review.ratings.hamburguer.toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Pão:</span> ${review.ratings.pao.toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Equilíbrio:</span> ${review.ratings.equilibrio.toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Acompanh.:</span> ${review.ratings.acompanhamentos.toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Atendimento:</span> ${review.ratings.atendimento.toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Ambiente:</span> ${review.ratings.ambiente.toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Cardápio:</span> ${review.ratings.cardapio.toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Tempo:</span> ${review.ratings.tempo.toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Custo:</span> ${review.ratings.custo.toFixed(1)}</div>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-2 bg-gray-100 rounded-md p-3 text-center text-xs sm:text-sm">
+                        ${ratingsHTML}
                     </div>
                 </div>
             `;
         };
 
         const renderRanking = () => {
-            if (allReviews.length === 0) {
+            const filteredReviews = allReviews.filter(r => r.category === currentCategory);
+            if (filteredReviews.length === 0) {
                 rankingList.innerHTML = `<p class="text-sm text-gray-500 text-center p-4">O ranking aparecerá aqui quando houver avaliações.</p>`;
                 return;
             }
 
             const restaurantScores = {};
-            allReviews.forEach(review => {
-                // Normaliza o nome do restaurante para agrupar corretamente
+            filteredReviews.forEach(review => {
                 const normalizedName = review.restaurant_name.trim().toLowerCase();
                 if (!restaurantScores[normalizedName]) {
                     restaurantScores[normalizedName] = { 
-                        originalName: review.restaurant_name.trim(), // Guarda o nome original para exibição
+                        originalName: review.restaurant_name.trim(),
                         scores: [] 
                     };
                 }
@@ -317,15 +362,16 @@
         };
 
         const renderContent = () => {
-            const sortedReviews = [...allReviews].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+            const filteredReviews = allReviews.filter(r => r.category === currentCategory);
+            const sortedReviews = filteredReviews.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
             
             if (sortedReviews.length > 0) {
                 reviewsFeed.innerHTML = sortedReviews.map(createReviewCardHTML).join('');
             } else {
-                reviewsFeed.innerHTML = `<p class="text-sm text-gray-500 text-center p-4">Nenhuma avaliação foi feita ainda. Seja o primeiro!</p>`;
+                reviewsFeed.innerHTML = `<p class="text-sm text-gray-500 text-center p-4">Nenhuma avaliação foi feita ainda para esta categoria.</p>`;
             }
             
-            const count = allReviews.length;
+            const count = sortedReviews.length;
             totalReviewsCountEl.textContent = `${count} ${count === 1 ? 'avaliação registrada' : 'avaliações registradas'}`;
 
             renderRanking();
@@ -369,15 +415,18 @@
 
             // Preenche o formulário
             editReviewIdInput.value = reviewToEdit.id;
+            document.querySelector(`input[name="category"][value="${reviewToEdit.category}"]`).checked = true;
+            toggleCategoryFields(reviewToEdit.category);
+            
             userNameSelect.value = reviewToEdit.user_name;
             document.getElementById('restaurant-name').value = reviewToEdit.restaurant_name;
             document.getElementById('comment').value = reviewToEdit.comment;
             
             for (const key in reviewToEdit.ratings) {
-                document.getElementById(`rating-${key}`).value = reviewToEdit.ratings[key];
+                const inputEl = document.getElementById(`rating-${key}`);
+                if(inputEl) inputEl.value = reviewToEdit.ratings[key];
             }
 
-            // Altera o modal para o modo de edição
             modalTitle.textContent = "Editar Avaliação";
             submitBtn.textContent = "Salvar Alterações";
             openModal();
@@ -386,9 +435,12 @@
         const handleFormSubmit = async (event) => {
             event.preventDefault();
             
+            const selectedCategory = document.querySelector('input[name="category"]:checked').value;
+            const fields = selectedCategory === 'hamburguer' ? hamburguerFields : pizzaFields;
+            
             let isFormValid = true;
             formError.classList.add('hidden');
-            ratingInputs.forEach(input => {
+            fields.querySelectorAll('.rating-input').forEach(input => {
                 input.classList.remove('border-red-500');
                 const value = parseFloat(input.value);
                 if (isNaN(value) || value > 10 || value < 0) {
@@ -403,11 +455,9 @@
                 return;
             }
 
-            const reviewData = {
-                author_id: currentUserId,
-                user_name: userNameSelect.value,
-                restaurant_name: document.getElementById('restaurant-name').value.trim(), // Limpa espaços
-                ratings: {
+            let ratings = {};
+            if (selectedCategory === 'hamburguer') {
+                ratings = {
                     hamburguer: parseFloat(document.getElementById('rating-hamburguer').value),
                     pao: parseFloat(document.getElementById('rating-pao').value),
                     equilibrio: parseFloat(document.getElementById('rating-equilibrio').value),
@@ -417,25 +467,39 @@
                     cardapio: parseFloat(document.getElementById('rating-cardapio').value),
                     tempo: parseFloat(document.getElementById('rating-tempo').value),
                     custo: parseFloat(document.getElementById('rating-custo').value)
-                },
+                };
+            } else {
+                ratings = {
+                    massa: parseFloat(document.getElementById('rating-massa').value),
+                    molho: parseFloat(document.getElementById('rating-molho').value),
+                    queijo: parseFloat(document.getElementById('rating-queijo').value),
+                    cobertura: parseFloat(document.getElementById('rating-cobertura').value),
+                    pizza_equilibrio: parseFloat(document.getElementById('rating-pizza_equilibrio').value),
+                    pizza_atendimento: parseFloat(document.getElementById('rating-pizza_atendimento').value),
+                    pizza_ambiente: parseFloat(document.getElementById('rating-pizza_ambiente').value),
+                    pizza_cardapio: parseFloat(document.getElementById('rating-pizza_cardapio').value),
+                    pizza_tempo: parseFloat(document.getElementById('rating-pizza_tempo').value),
+                    pizza_custo: parseFloat(document.getElementById('rating-pizza_custo').value)
+                };
+            }
+
+            const reviewData = {
+                author_id: currentUserId,
+                user_name: userNameSelect.value,
+                restaurant_name: document.getElementById('restaurant-name').value.trim(),
+                ratings: ratings,
                 comment: document.getElementById('comment').value,
+                category: selectedCategory
             };
 
             const editingId = editReviewIdInput.value;
             let error;
 
             if (editingId) {
-                // Modo de Edição
-                const { error: updateError } = await supabaseClient
-                    .from('reviews')
-                    .update(reviewData)
-                    .eq('id', editingId);
+                const { error: updateError } = await supabaseClient.from('reviews').update(reviewData).eq('id', editingId);
                 error = updateError;
             } else {
-                // Modo de Criação
-                const { error: insertError } = await supabaseClient
-                    .from('reviews')
-                    .insert([reviewData]);
+                const { error: insertError } = await supabaseClient.from('reviews').insert([reviewData]);
                 error = insertError;
             }
             
@@ -451,10 +515,7 @@
 
         // --- LISTENER DO SUPABASE ---
         async function fetchAndRenderReviews() {
-            const { data, error } = await supabaseClient
-                .from('reviews')
-                .select('*');
-
+            const { data, error } = await supabaseClient.from('reviews').select('*');
             if (error) {
                 console.error("Erro ao buscar avaliações:", error);
                 loadingOverlay.innerHTML = "<p class='text-red-500'>Erro ao carregar dados.</p>";
@@ -465,19 +526,31 @@
             }
         }
 
+        function toggleCategoryFields(category) {
+            if (category === 'hamburguer') {
+                hamburguerFields.classList.remove('hidden');
+                pizzaFields.classList.add('hidden');
+                pizzaFields.querySelectorAll('input').forEach(i => i.required = false);
+                hamburguerFields.querySelectorAll('input').forEach(i => i.required = true);
+            } else {
+                hamburguerFields.classList.add('hidden');
+                pizzaFields.classList.remove('hidden');
+                hamburguerFields.querySelectorAll('input').forEach(i => i.required = false);
+                pizzaFields.querySelectorAll('input').forEach(i => i.required = true);
+            }
+        }
+
         // --- INICIALIZAÇÃO E REALTIME ---
-        fetchAndRenderReviews(); // Busca inicial
+        fetchAndRenderReviews();
 
         supabaseClient.channel('public:reviews')
           .on('postgres_changes', { event: '*', schema: 'public', table: 'reviews' }, payload => {
-            console.log('Alteração recebida!', payload);
-            fetchAndRenderReviews(); // Busca novamente os dados quando algo muda
+            fetchAndRenderReviews();
           })
           .subscribe();
 
         const openModal = () => {
             formError.classList.add('hidden');
-            ratingInputs.forEach(input => input.classList.remove('border-red-500'));
             modal.classList.remove('hidden');
             modal.classList.add('flex');
             setTimeout(() => { modalPanel.classList.remove('scale-95', 'opacity-0'); }, 50);
@@ -488,21 +561,22 @@
             setTimeout(() => {
                 modal.classList.add('hidden');
                 modal.classList.remove('flex');
-                // Reseta o formulário para o estado de criação ao fechar
                 reviewForm.reset();
                 editReviewIdInput.value = '';
                 modalTitle.textContent = "Sua Avaliação";
                 submitBtn.textContent = "Publicar";
+                toggleCategoryFields('hamburguer');
             }, 200);
         };
 
         // --- EVENT LISTENERS ---
         reviewForm.addEventListener('submit', handleFormSubmit);
         openModalBtn.addEventListener('click', () => {
-            // Garante que o formulário está no modo de criação ao clicar no botão principal
             editReviewIdInput.value = '';
             modalTitle.textContent = "Sua Avaliação";
             submitBtn.textContent = "Publicar";
+            toggleCategoryFields(currentCategory);
+            document.querySelector(`input[name="category"][value="${currentCategory}"]`).checked = true;
             openModal();
         });
         closeModalBtn.addEventListener('click', closeModal);
@@ -511,7 +585,25 @@
                 closeModal();
             }
         });
+        categoryTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                currentCategory = tab.dataset.category;
+                categoryTabs.forEach(t => t.classList.remove('tab-active', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300'));
+                categoryTabs.forEach(t => {
+                    if (t.dataset.category === currentCategory) {
+                        t.classList.add('tab-active');
+                    } else {
+                        t.classList.add('text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
+                    }
+                });
+                renderContent();
+            });
+        });
+        categoryRadios.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                toggleCategoryFields(e.target.value);
+            });
+        });
     </script>
 </body>
 </html>
-
