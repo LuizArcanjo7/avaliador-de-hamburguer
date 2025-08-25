@@ -70,9 +70,11 @@
     </div>
 
     <!-- Modal for New Review -->
-    <div id="reviewModal" class="fixed inset-0 z-50 items-center justify-center hidden">
+    <div id="reviewModal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
         <div class="modal-backdrop fixed inset-0"></div>
-        <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg m-4 relative transform transition-all duration-300 scale-95 opacity-0" id="modal-panel">
+        <!-- **** MUDANÇA APLICADA AQUI **** -->
+        <!-- Adicionado 'overflow-y-auto' para permitir rolagem interna e 'max-h-[90vh]' para limitar a altura em telas pequenas -->
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg m-4 relative transform transition-all duration-300 scale-95 opacity-0 overflow-y-auto max-h-[90vh]" id="modal-panel">
             <form id="review-form" class="p-8">
                 <h3 class="text-2xl font-bold mb-2 text-gray-900">Sua Avaliação</h3>
                 <p class="text-gray-500 mb-6">Dê notas de 0 a 10 para cada critério.</p>
@@ -87,7 +89,7 @@
                                 <option value="Michel">Michel</option>
                                 <option value="Julia">Julia</option>
                                 <option value="Beatriz">Beatriz</option>
-                                <option value="Willian">William</option>
+                                <option value="William">William</option>
                                 <option value="Manu">Manu</option>
                                 <option value="Victor">Victor</option>
                                 <option value="Tirras">Tirras</option>
@@ -167,7 +169,7 @@
                 'michel': { name: 'Michel', avatar: '👨‍🎨' },
                 'julia': { name: 'Julia', avatar: '👩‍💼' },
                 'beatriz': { name: 'Beatriz', avatar: '🧑‍🚀' },
-                'william': { name: 'William', avatar: '👨‍🔬' },
+                'william': { name: 'Willian', avatar: '👨‍🔬' },
                 'manu': { name: 'Manu', avatar: '👩‍🎨' },
                 'victor': { name: 'Victor', avatar: '👨‍💻' },
                 'tirras': { name: 'Tirras', avatar: '🧑‍🍳' },
@@ -319,14 +321,15 @@
                 formError.classList.add('hidden');
                 ratingInputs.forEach(input => {
                     input.classList.remove('border-red-500'); // Limpa erros anteriores
-                    if (parseFloat(input.value) > 10) {
+                    const value = parseFloat(input.value);
+                    if (isNaN(value) || value > 10 || value < 0) {
                         isFormValid = false;
                         input.classList.add('border-red-500'); // Adiciona borda vermelha no campo inválido
                     }
                 });
 
                 if (!isFormValid) {
-                    formError.textContent = 'As notas não podem ser maiores que 10.';
+                    formError.textContent = 'As notas devem ser um número entre 0 e 10.';
                     formError.classList.remove('hidden');
                     return; // Interrompe o envio do formulário
                 }
@@ -397,4 +400,3 @@
     </script>
 </body>
 </html>
-
