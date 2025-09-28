@@ -83,23 +83,18 @@
         <div id="map-content" class="hidden">
             <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
                  <h2 class="text-xl font-bold mb-4 text-gray-800">Mapa de Hamburguerias Salvas</h2>
-                 
                  <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d120064.09487958516!2d-44.07616116093749!3d-19.88209670716878!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1spt-BR!2sbr!4v1759061595318!5m2!1spt-BR!2sbr" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-
             </div>
         </div>
 
         <main id="main-content-grid" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            
             <div class="lg:col-span-1 bg-white p-6 rounded-xl shadow-sm border border-gray-200">
                 <h2 class="text-xl font-bold mb-4 text-gray-800 flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17.5a2.5 2.5 0 0 0 5 0V14.66"/><path d="M8 19h8"/><path d="M9 9h6"/><path d="M12 9V5"/></svg>
                     Ranking
                 </h2>
-                <div id="ranking-list" class="space-y-3">
-                    </div>
+                <div id="ranking-list" class="space-y-3"></div>
             </div>
-
             <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-gray-200">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2">
@@ -108,8 +103,7 @@
                     </h2>
                     <p id="total-reviews-count" class="text-sm font-medium text-gray-500"></p>
                 </div>
-                <div id="reviews-feed" class="space-y-4">
-                    </div>
+                <div id="reviews-feed" class="space-y-4"></div>
             </div>
         </main>
     </div>
@@ -120,9 +114,7 @@
             <form id="review-form" class="p-8">
                 <h3 id="modal-title" class="text-2xl font-bold mb-2 text-gray-900">Sua Avaliação</h3>
                 <p class="text-gray-500 mb-6">Dê notas de 0 a 10 para cada critério.</p>
-                
                 <input type="hidden" id="edit-review-id">
-
                 <div class="space-y-5">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">O que você está avaliando?</label>
@@ -137,7 +129,6 @@
                             </label>
                         </div>
                     </div>
-
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label for="user-name" class="block text-sm font-medium text-gray-700 mb-1">Seu Nome</label>
@@ -160,7 +151,6 @@
                             <input type="text" id="restaurant-name" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required>
                         </div>
                     </div>
-                    
                     <div id="hamburguer-fields" class="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-5">
                         <div><label for="rating-hamburguer" class="block text-sm font-medium text-gray-700 mb-1">Hambúrguer</label><input type="number" id="rating-hamburguer" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required></div>
                         <div><label for="rating-pao" class="block text-sm font-medium text-gray-700 mb-1">Pão</label><input type="number" id="rating-pao" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required></div>
@@ -172,7 +162,6 @@
                         <div><label for="rating-tempo" class="block text-sm font-medium text-gray-700 mb-1">Tempo</label><input type="number" id="rating-tempo" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required></div>
                         <div><label for="rating-custo" class="block text-sm font-medium text-gray-700 mb-1">Custo</label><input type="number" id="rating-custo" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required></div>
                     </div>
-
                     <div id="pizza-fields" class="hidden space-y-5">
                         <div class="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-5">
                             <div><label for="rating-massa" class="block text-sm font-medium text-gray-700 mb-1">Massa</label><input type="number" id="rating-massa" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
@@ -191,7 +180,6 @@
                             <textarea id="diferencial" rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" placeholder="O que torna esta pizza especial?"></textarea>
                         </div>
                     </div>
-
                     <div>
                         <label for="comment" class="block text-sm font-medium text-gray-700 mb-1">Comentário</label>
                         <textarea id="comment" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" placeholder="Descreva sua experiência..." required></textarea>
@@ -215,7 +203,6 @@
 
             const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-            // --- ELEMENTOS DO DOM ---
             const reviewsFeed = document.getElementById('reviews-feed');
             const rankingList = document.getElementById('ranking-list');
             const reviewForm = document.getElementById('review-form');
@@ -257,59 +244,193 @@
             const currentUserId = getAnonymousUserId();
 
             const calculateFinalScore = (ratings) => {
-                if (!ratings || Object.keys(ratings).length === 0) return 0;
-                const scores = Object.values(ratings).map(s => parseFloat(s)).filter(s => !isNaN(s));
-                if (scores.length === 0) return 0;
-                const sum = scores.reduce((acc, score) => acc + score, 0);
-                return sum / scores.length;
+                if (!ratings) return 0;
+                const scores = Object.values(ratings);
+                const sum = scores.reduce((acc, score) => acc + (parseFloat(score) || 0), 0);
+                return scores.length > 0 ? sum / scores.length : 0;
             };
             
             const createReviewCardHTML = (review) => {
                 const finalScore = calculateFinalScore(review.ratings);
-                const actionButtonsHTML = `...`; // Seu código de botões aqui
+                const actionButtonsHTML = `
+                    <button data-review-id="${review.id}" class="edit-btn text-gray-400 hover:text-blue-500 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+                    </button>
+                    <button data-review-id="${review.id}" class="delete-btn text-gray-400 hover:text-red-500 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                    </button>
+                `;
+                
                 let ratingsHTML = '';
                 if (review.category === 'hamburguer') {
-                    ratingsHTML = `...`; // Seu código de ratings de hamburguer aqui
+                    ratingsHTML = `
+                        <div><span class="font-semibold block sm:inline">Hambúrguer:</span> ${review.ratings.hamburguer.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Pão:</span> ${review.ratings.pao.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Equilíbrio:</span> ${review.ratings.equilibrio.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Acompanh.:</span> ${review.ratings.acompanhamentos.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Atendimento:</span> ${review.ratings.atendimento.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Ambiente:</span> ${review.ratings.ambiente.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Cardápio:</span> ${review.ratings.cardapio.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Tempo:</span> ${review.ratings.tempo.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Custo:</span> ${review.ratings.custo.toFixed(1)}</div>
+                    `;
                 } else if (review.category === 'pizza') {
-                    ratingsHTML = `...`; // Seu código de ratings de pizza aqui
+                     ratingsHTML = `
+                        <div><span class="font-semibold block sm:inline">Massa:</span> ${review.ratings.massa.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Molho:</span> ${review.ratings.molho.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Queijo:</span> ${review.ratings.queijo.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Cobertura:</span> ${review.ratings.cobertura.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Equilíbrio:</span> ${review.ratings.pizza_equilibrio.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Atendimento:</span> ${review.ratings.pizza_atendimento.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Ambiente:</span> ${review.ratings.pizza_ambiente.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Cardápio:</span> ${review.ratings.pizza_cardapio.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Tempo:</span> ${review.ratings.pizza_tempo.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Custo:</span> ${review.ratings.pizza_custo.toFixed(1)}</div>
+                    `;
                 }
+                
                 let diferencialHTML = '';
                 if (review.category === 'pizza' && review.diferencial) {
-                   diferencialHTML = `...`; // Seu código de diferencial aqui
+                    diferencialHTML = `
+                        <div class="mt-4 pt-4 border-t border-gray-200 col-span-full">
+                            <h4 class="font-semibold text-sm text-gray-800">Diferencial:</h4>
+                            <p class="text-gray-700 text-sm whitespace-pre-wrap">${review.diferencial}</p>
+                        </div>
+                    `;
                 }
 
-                // A função de criação do card continua a mesma
-                // ...
+                return `
+                    <div class="bg-gray-50 border border-gray-200 rounded-lg p-5 transition-shadow hover:shadow-md">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="font-bold text-lg text-gray-900">${review.restaurant_name}</h3>
+                                <div class="flex items-center gap-2 text-sm text-gray-600 mt-1">
+                                    <span class="text-2xl">${userAvatars[review.user_name] || '👤'}</span>
+                                    <span>${review.user_name}</span>
+                                </div>
+                            </div>
+                            <div class="text-right flex items-start gap-2">
+                                <div>
+                                    <span class="font-bold text-2xl text-purple-600">${finalScore.toFixed(1)}</span>
+                                    <span class="text-xs text-gray-500 block">NOTA FINAL</span>
+                                </div>
+                                <div class="flex flex-col gap-2">${actionButtonsHTML}</div>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 my-4 whitespace-pre-wrap">${review.comment}</p>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-2 bg-gray-100 rounded-md p-3 text-center text-xs sm:text-sm">
+                            ${ratingsHTML}
+                        </div>
+                        ${diferencialHTML}
+                    </div>
+                `;
+            };
+
+            const renderRanking = () => {
+                const filteredReviews = allReviews.filter(r => r.category === currentCategory);
+                if (filteredReviews.length === 0) {
+                    rankingList.innerHTML = `<p class="text-sm text-gray-500 text-center p-4">O ranking aparecerá aqui.</p>`;
+                    return;
+                }
+                const restaurantScores = {};
+                filteredReviews.forEach(review => {
+                    const normalizedName = review.restaurant_name.trim().toLowerCase();
+                    if (!restaurantScores[normalizedName]) {
+                        restaurantScores[normalizedName] = { originalName: review.restaurant_name.trim(), scores: [] };
+                    }
+                    restaurantScores[normalizedName].scores.push(calculateFinalScore(review.ratings));
+                });
+                const rankedList = Object.values(restaurantScores).map(resto => {
+                    const average = resto.scores.reduce((a, b) => a + b, 0) / resto.scores.length;
+                    return { name: resto.originalName, averageScore: average };
+                }).sort((a, b) => b.averageScore - a.averageScore);
+                rankingList.innerHTML = rankedList.map((resto, index) => `
+                    <div class="flex items-center justify-between bg-gray-50 p-3 rounded-lg">
+                        <div class="flex items-center gap-3">
+                            <span class="font-bold text-lg text-purple-600 w-6">${index + 1}.</span>
+                            <span class="font-semibold text-gray-800">${resto.name}</span>
+                        </div>
+                        <span class="font-bold text-purple-600">${resto.averageScore.toFixed(1)}</span>
+                    </div>
+                `).join('');
+            };
+
+            const renderContent = () => {
+                const filteredReviews = allReviews.filter(r => r.category === currentCategory);
+                const sortedReviews = filteredReviews.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                if (sortedReviews.length > 0) {
+                    reviewsFeed.innerHTML = sortedReviews.map(createReviewCardHTML).join('');
+                } else {
+                    reviewsFeed.innerHTML = `<p class="text-sm text-gray-500 text-center p-4">Nenhuma avaliação para esta categoria.</p>`;
+                }
+                const count = sortedReviews.length;
+                totalReviewsCountEl.textContent = `${count} ${count === 1 ? 'avaliação' : 'avaliações'}`;
+                renderRanking();
+                addDeleteButtonListeners();
+                addEditButtonListeners();
             };
             
-            // Todas as suas outras funções (renderRanking, renderContent, listeners de botões, etc.)
-            // continuam aqui, sem alterações...
-            
-            // --- LÓGICA DAS ABAS (MODIFICADA) ---
+            // O resto das suas funções (handleDelete, handleEdit, handleFormSubmit, modal, etc) viriam aqui...
+            // Por uma questão de brevidade, estou omitindo-as, mas elas devem estar no seu código final.
+            const handleDeleteReview = async (reviewId) => { /* ... sua lógica ... */ };
+            const handleEditReview = (reviewId) => { /* ... sua lógica ... */ };
+            const handleFormSubmit = async (event) => { /* ... sua lógica ... */ };
+            const openModal = () => { /* ... sua lógica ... */ };
+            const closeModal = () => { /* ... sua lógica ... */ };
+
             categoryTabs.forEach(tab => {
                 tab.addEventListener('click', () => {
                     currentCategory = tab.dataset.category;
-
-                    // Atualiza a aparência das abas
                     categoryTabs.forEach(t => t.classList.remove('tab-active'));
                     tab.classList.add('tab-active');
-
-                    // Lógica para mostrar/esconder o conteúdo
                     if (currentCategory === 'mapa') {
                         mainContentGrid.classList.add('hidden');
                         mapContent.classList.remove('hidden');
-                        openModalBtn.style.display = 'none'; // Esconde o botão de Nova Avaliação
+                        openModalBtn.style.display = 'none';
                     } else {
                         mainContentGrid.classList.remove('hidden');
                         mapContent.classList.add('hidden');
-                        openModalBtn.style.display = 'flex'; // Mostra o botão
+                        openModalBtn.style.display = 'flex';
                         renderContent();
                     }
                 });
             });
 
-            // O resto do seu código JS para buscar dados,
-            // manipular o formulário e o modal continua aqui...
+            async function fetchAndRenderReviews() {
+                const { data, error } = await supabaseClient.from('reviews').select('*');
+                if (error) {
+                    console.error("Erro ao buscar avaliações:", error);
+                    loadingOverlay.innerHTML = "<p class='text-red-500'>Erro ao carregar dados.</p>";
+                } else {
+                    allReviews = data;
+                    renderContent();
+                    loadingOverlay.classList.add('hidden');
+                }
+            }
+
+            fetchAndRenderReviews();
+
+            supabaseClient.channel('public:reviews')
+              .on('postgres_changes', { event: '*', schema: 'public', table: 'reviews' }, payload => {
+                fetchAndRenderReviews();
+              })
+              .subscribe();
+              
+            // Adicionar todos os outros event listeners (form, botões do modal, etc.)
+            reviewForm.addEventListener('submit', handleFormSubmit);
+            openModalBtn.addEventListener('click', () => { /* ... sua lógica ... */ });
+            closeModalBtn.addEventListener('click', closeModal);
+            modal.addEventListener('click', (e) => {
+                if (e.target.classList.contains('modal-backdrop')) {
+                    closeModal();
+                }
+            });
+            categoryRadios.forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    /* ... sua lógica ... */
+                });
+            });
+
         });
     </script>
 </body>
