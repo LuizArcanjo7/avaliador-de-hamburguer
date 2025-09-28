@@ -1,631 +1,650 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Imagem & Degustação - Avaliador</title>
-    <!-- Tailwind CSS for styling -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Supabase Client -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6; /* gray-100 */
-        }
-        /* Custom scrollbar for better aesthetics */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
-        .modal-backdrop {
-            background-color: rgba(0, 0, 0, 0.5);
-        }
-        /* Loading Spinner */
-        #loader {
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid #8b5cf6;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .tab-active {
-            border-color: #8b5cf6;
-            color: #8b5cf6;
-            background-color: #f5f3ff;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imagem & Degustação - Avaliador</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* gray-100 */
+        }
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+        .modal-backdrop {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        /* Loading Spinner */
+        #loader {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #8b5cf6;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .tab-active {
+            border-color: #8b5cf6;
+            color: #8b5cf6;
+            background-color: #f5f3ff;
+        }
+    </style>
 </head>
 <body class="antialiased text-gray-800">
 
-    <!-- Loading Overlay -->
-    <div id="loading-overlay" class="fixed inset-0 z-50 bg-white/80 flex items-center justify-center">
-        <div id="loader"></div>
-    </div>
+        <div id="loading-overlay" class="fixed inset-0 z-50 bg-white/80 flex items-center justify-center">
+        <div id="loader"></div>
+    </div>
 
-    <!-- Main Container -->
-    <div class="container mx-auto max-w-7xl p-4 sm:p-6 lg:p-8">
-        
-        <!-- Header -->
-        <header class="flex flex-col sm:flex-row justify-between items-center mb-8 pb-4 border-b border-gray-200">
-            <div>
-                <h1 class="text-3xl font-bold text-gray-900">Imagem & Degustação</h1>
-                <p class="text-gray-500 mt-1">Suas avaliações de comidas em um só lugar.</p>
-            </div>
-            <button id="openModalBtn" class="mt-4 sm:mt-0 w-full sm:w-auto flex items-center justify-center gap-2 bg-purple-600 text-white font-semibold py-2 px-5 rounded-lg shadow-md hover:bg-purple-700 transition-all duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
-                Nova Avaliação
-            </button>
-        </header>
+        <div class="container mx-auto max-w-7xl p-4 sm:p-6 lg:p-8">
+        
+                <header class="flex flex-col sm:flex-row justify-between items-center mb-8 pb-4 border-b border-gray-200">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900">Imagem & Degustação</h1>
+                <p class="text-gray-500 mt-1">Suas avaliações de comidas em um só lugar.</p>
+            </div>
+            <button id="openModalBtn" class="mt-4 sm:mt-0 w-full sm:w-auto flex items-center justify-center gap-2 bg-purple-600 text-white font-semibold py-2 px-5 rounded-lg shadow-md hover:bg-purple-700 transition-all duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                Nova Avaliação
+            </button>
+        </header>
 
-        <!-- Category Tabs -->
-        <div class="mb-6">
-            <div class="border-b border-gray-200">
-                <nav class="-mb-px flex space-x-6" aria-label="Tabs">
-                    <button data-category="hamburguer" class="category-tab whitespace-nowrap py-3 px-2 border-b-2 font-medium text-sm tab-active flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11h18M3 6h18M3 16h18"/></svg>
-                        Hambúrgueres
-                    </button>
-                    <button data-category="pizza" class="category-tab whitespace-nowrap py-3 px-2 border-b-2 font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300 flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 0 0-9.4 13.5c.6.9 1.5 1.5 2.4 1.5h14c.9 0 1.8-.6 2.4-1.5A10 10 0 0 0 12 2Z"/><path d="m2 12 10 10 10-10"/><path d="M12 12v10"/></svg>
-                        Pizzas
-                    </button>
-                </nav>
-            </div>
-        </div>
+                <div class="mb-6">
+            <div class="border-b border-gray-200">
+                <nav class="-mb-px flex space-x-6" aria-label="Tabs">
+                    <button data-category="hamburguer" class="category-tab whitespace-nowrap py-3 px-2 border-b-2 font-medium text-sm tab-active flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11h18M3 6h18M3 16h18"/></svg>
+                        Hambúrgueres
+                    </button>
+                    <button data-category="pizza" class="category-tab whitespace-nowrap py-3 px-2 border-b-2 font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 0 0-9.4 13.5c.6.9 1.5 1.5 2.4 1.5h14c.9 0 1.8-.6 2.4-1.5A10 10 0 0 0 12 2Z"/><path d="m2 12 10 10 10-10"/><path d="M12 12v10"/></svg>
+                        Pizzas
+                    </button>
+                                        <button data-category="mapa" class="category-tab whitespace-nowrap py-3 px-2 border-b-2 font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                        Mapa
+                    </button>
+                </nav>
+            </div>
+        </div>
 
-        <!-- Main Content Grid -->
-        <main class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            
-            <!-- Ranking Column -->
-            <div class="lg:col-span-1 bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                <h2 class="text-xl font-bold mb-4 text-gray-800 flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17.5a2.5 2.5 0 0 0 5 0V14.66"/><path d="M8 19h8"/><path d="M9 9h6"/><path d="M12 9V5"/></svg>
-                    Ranking
-                </h2>
-                <div id="ranking-list" class="space-y-3">
-                    <!-- Ranking será inserido aqui -->
-                </div>
-            </div>
+                <div id="map-content" class="hidden">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                <h2 class="text-xl font-bold mb-4 text-gray-800">Mapa de Locais Salvos</h2>
+                                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d120064.09487958516!2d-44.07616116093749!3d-19.88209670716878!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1spt-BR!2sbr!4v1759061595318!5m2!1spt-BR!2sbr"
+                    width="100%" 
+                    height="600" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+        </div>
 
-            <!-- "Novas Avaliações" Column -->
-            <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2">
-                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h4"/><path d="M9 22V4"/><path d="m21 14-5-1-5 1"/><path d="m16 10 5 1-5 1"/><path d="M12 18h10"/><path d="M12 12h10"/><path d="M12 6h10"/></svg>
-                        Novas Avaliações
-                    </h2>
-                    <p id="total-reviews-count" class="text-sm font-medium text-gray-500"></p>
-                </div>
-                <div id="reviews-feed" class="space-y-4">
-                    <!-- Feed de novas avaliações será inserido aqui -->
-                </div>
-            </div>
-        </main>
-    </div>
+                <main id="main-content-grid" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+                        <div class="lg:col-span-1 bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                <h2 class="text-xl font-bold mb-4 text-gray-800 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17.5a2.5 2.5 0 0 0 5 0V14.66"/><path d="M8 19h8"/><path d="M9 9h6"/><path d="M12 9V5"/></svg>
+                    Ranking
+                </h2>
+                <div id="ranking-list" class="space-y-3">
+                                    </div>
+            </div>
 
-    <!-- Modal for New Review -->
-    <div id="reviewModal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
-        <div class="modal-backdrop fixed inset-0"></div>
-        <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg m-4 relative transform transition-all duration-300 scale-95 opacity-0 overflow-y-auto max-h-[90vh]" id="modal-panel">
-            <form id="review-form" class="p-8">
-                <h3 id="modal-title" class="text-2xl font-bold mb-2 text-gray-900">Sua Avaliação</h3>
-                <p class="text-gray-500 mb-6">Dê notas de 0 a 10 para cada critério.</p>
-                
-                <input type="hidden" id="edit-review-id">
+                        <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2">
+                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h4"/><path d="M9 22V4"/><path d="m21 14-5-1-5 1"/><path d="m16 10 5 1-5 1"/><path d="M12 18h10"/><path d="M12 12h10"/><path d="M12 6h10"/></svg>
+                        Novas Avaliações
+                    </h2>
+                    <p id="total-reviews-count" class="text-sm font-medium text-gray-500"></p>
+                </div>
+                <div id="reviews-feed" class="space-y-4">
+                                    </div>
+            </div>
+        </main>
+    </div>
 
-                <div class="space-y-5">
-                    <!-- Category Selector -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">O que você está avaliando?</label>
-                        <div class="flex gap-4">
-                            <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="radio" name="category" value="hamburguer" class="form-radio h-4 w-4 text-purple-600" checked>
-                                <span class="text-sm font-medium text-gray-700">Hambúrguer</span>
-                            </label>
-                            <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="radio" name="category" value="pizza" class="form-radio h-4 w-4 text-purple-600">
-                                <span class="text-sm font-medium text-gray-700">Pizza</span>
-                            </label>
-                        </div>
-                    </div>
+        <div id="reviewModal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+        <div class="modal-backdrop fixed inset-0"></div>
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg m-4 relative transform transition-all duration-300 scale-95 opacity-0 overflow-y-auto max-h-[90vh]" id="modal-panel">
+            <form id="review-form" class="p-8">
+                <h3 id="modal-title" class="text-2xl font-bold mb-2 text-gray-900">Sua Avaliação</h3>
+                <p class="text-gray-500 mb-6">Dê notas de 0 a 10 para cada critério.</p>
+                
+                <input type="hidden" id="edit-review-id">
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label for="user-name" class="block text-sm font-medium text-gray-700 mb-1">Seu Nome</label>
-                            <select id="user-name" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required>
-                                <option value="Arcanjo">Arcanjo</option>
-                                <option value="Luana">Luana</option>
-                                <option value="Michel">Michel</option>
-                                <option value="Julia">Julia</option>
-                                <option value="Beatriz">Beatriz</option>
-                                <option value="Willian">Willian</option>
-                                <option value="Manu">Manu</option>
-                                <option value="Victor">Victor</option>
-                                <option value="Tirras">Tirras</option>
-                                <option value="Kyvia">Kyvia</option>
-                                <option value="Clévio">Clévio</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="restaurant-name" class="block text-sm font-medium text-gray-700 mb-1">Nome do Estabelecimento</label>
-                            <input type="text" id="restaurant-name" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required>
-                        </div>
-                    </div>
-                    
-                    <!-- Hamburguer Fields -->
-                    <div id="hamburguer-fields" class="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-5">
-                        <div><label for="rating-hamburguer" class="block text-sm font-medium text-gray-700 mb-1">Hambúrguer</label><input type="number" id="rating-hamburguer" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required></div>
-                        <div><label for="rating-pao" class="block text-sm font-medium text-gray-700 mb-1">Pão</label><input type="number" id="rating-pao" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required></div>
-                        <div><label for="rating-equilibrio" class="block text-sm font-medium text-gray-700 mb-1">Equilíbrio</label><input type="number" id="rating-equilibrio" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required></div>
-                        <div><label for="rating-acompanhamentos" class="block text-sm font-medium text-gray-700 mb-1">Acompanh.</label><input type="number" id="rating-acompanhamentos" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required></div>
-                        <div><label for="rating-atendimento" class="block text-sm font-medium text-gray-700 mb-1">Atendimento</label><input type="number" id="rating-atendimento" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required></div>
-                        <div><label for="rating-ambiente" class="block text-sm font-medium text-gray-700 mb-1">Ambiente</label><input type="number" id="rating-ambiente" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required></div>
-                        <div><label for="rating-cardapio" class="block text-sm font-medium text-gray-700 mb-1">Cardápio</label><input type="number" id="rating-cardapio" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required></div>
-                        <div><label for="rating-tempo" class="block text-sm font-medium text-gray-700 mb-1">Tempo</label><input type="number" id="rating-tempo" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required></div>
-                        <div><label for="rating-custo" class="block text-sm font-medium text-gray-700 mb-1">Custo</label><input type="number" id="rating-custo" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required></div>
-                    </div>
+                <div class="space-y-5">
+                                        <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">O que você está avaliando?</label>
+                        <div class="flex gap-4">
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="radio" name="category" value="hamburguer" class="form-radio h-4 w-4 text-purple-600" checked>
+                                <span class="text-sm font-medium text-gray-700">Hambúrguer</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="radio" name="category" value="pizza" class="form-radio h-4 w-4 text-purple-600">
+                                <span class="text-sm font-medium text-gray-700">Pizza</span>
+                            </label>
+                        </div>
+                    </div>
 
-                    <!-- Pizza Fields -->
-                    <div id="pizza-fields" class="hidden space-y-5">
-                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-5">
-                            <div><label for="rating-massa" class="block text-sm font-medium text-gray-700 mb-1">Massa</label><input type="number" id="rating-massa" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
-                            <div><label for="rating-molho" class="block text-sm font-medium text-gray-700 mb-1">Molho</label><input type="number" id="rating-molho" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
-                            <div><label for="rating-queijo" class="block text-sm font-medium text-gray-700 mb-1">Queijo</label><input type="number" id="rating-queijo" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
-                            <div><label for="rating-cobertura" class="block text-sm font-medium text-gray-700 mb-1">Cobertura</label><input type="number" id="rating-cobertura" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
-                            <div><label for="rating-pizza_equilibrio" class="block text-sm font-medium text-gray-700 mb-1">Equilíbrio</label><input type="number" id="rating-pizza_equilibrio" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
-                            <div><label for="rating-pizza_atendimento" class="block text-sm font-medium text-gray-700 mb-1">Atendimento</label><input type="number" id="rating-pizza_atendimento" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
-                            <div><label for="rating-pizza_ambiente" class="block text-sm font-medium text-gray-700 mb-1">Ambiente</label><input type="number" id="rating-pizza_ambiente" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
-                            <div><label for="rating-pizza_cardapio" class="block text-sm font-medium text-gray-700 mb-1">Cardápio</label><input type="number" id="rating-pizza_cardapio" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
-                            <div><label for="rating-pizza_tempo" class="block text-sm font-medium text-gray-700 mb-1">Tempo</label><input type="number" id="rating-pizza_tempo" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
-                            <div><label for="rating-pizza_custo" class="block text-sm font-medium text-gray-700 mb-1">Custo</label><input type="number" id="rating-pizza_custo" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
-                        </div>
-                        <div>
-                            <label for="diferencial" class="block text-sm font-medium text-gray-700 mb-1">Diferencial</label>
-                            <textarea id="diferencial" rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" placeholder="O que torna esta pizza especial?"></textarea>
-                        </div>
-                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label for="user-name" class="block text-sm font-medium text-gray-700 mb-1">Seu Nome</label>
+                            <select id="user-name" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required>
+                                <option value="Arcanjo">Arcanjo</option>
+                                <option value="Luana">Luana</option>
+                                <option value="Michel">Michel</option>
+                                <option value="Julia">Julia</option>
+                                <option value="Beatriz">Beatriz</option>
+                                <option value="Willian">Willian</option>
+                                <option value="Manu">Manu</option>
+                                <option value="Victor">Victor</option>
+                                <option value="Tirras">Tirras</option>
+                                <option value="Kyvia">Kyvia</option>
+                                <option value="Clévio">Clévio</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="restaurant-name" class="block text-sm font-medium text-gray-700 mb-1">Nome do Estabelecimento</label>
+                            <input type="text" id="restaurant-name" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required>
+                        </div>
+                    </div>
+                    
+                                        <div id="hamburguer-fields" class="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-5">
+                        <div><label for="rating-hamburguer" class="block text-sm font-medium text-gray-700 mb-1">Hambúrguer</label><input type="number" id="rating-hamburguer" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required></div>
+                        <div><label for="rating-pao" class="block text-sm font-medium text-gray-700 mb-1">Pão</label><input type="number" id="rating-pao" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required></div>
+                        <div><label for="rating-equilibrio" class="block text-sm font-medium text-gray-700 mb-1">Equilíbrio</label><input type="number" id="rating-equilibrio" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required></div>
+                        <div><label for="rating-acompanhamentos" class="block text-sm font-medium text-gray-700 mb-1">Acompanh.</label><input type="number" id="rating-acompanhamentos" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required></div>
+                        <div><label for="rating-atendimento" class="block text-sm font-medium text-gray-700 mb-1">Atendimento</label><input type="number" id="rating-atendimento" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required></div>
+                        <div><label for="rating-ambiente" class="block text-sm font-medium text-gray-700 mb-1">Ambiente</label><input type="number" id="rating-ambiente" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required></div>
+                        <div><label for="rating-cardapio" class="block text-sm font-medium text-gray-700 mb-1">Cardápio</label><input type="number" id="rating-cardapio" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required></div>
+                        <div><label for="rating-tempo" class="block text-sm font-medium text-gray-700 mb-1">Tempo</label><input type="number" id="rating-tempo" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required></div>
+                        <div><label for="rating-custo" class="block text-sm font-medium text-gray-700 mb-1">Custo</label><input type="number" id="rating-custo" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required></div>
+                    </div>
 
-                    <div>
-                        <label for="comment" class="block text-sm font-medium text-gray-700 mb-1">Comentário</label>
-                        <textarea id="comment" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" placeholder="Descreva sua experiência..." required></textarea>
-                    </div>
-                </div>
-                <div id="form-error" class="text-red-500 text-sm mt-4 text-center font-semibold hidden"></div>
-                <div class="mt-8 flex justify-end gap-3">
-                    <button type="button" id="closeModalBtn" class="bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300 transition-colors">Cancelar</button>
-                    <button type="submit" id="submit-btn" class="bg-purple-600 text-white font-semibold py-2 px-6 rounded-lg shadow-md hover:bg-purple-700 transition-colors">Publicar</button>
-                </div>
-            </form>
-        </div>
-    </div>
+                                        <div id="pizza-fields" class="hidden space-y-5">
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-5">
+                            <div><label for="rating-massa" class="block text-sm font-medium text-gray-700 mb-1">Massa</label><input type="number" id="rating-massa" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
+                            <div><label for="rating-molho" class="block text-sm font-medium text-gray-700 mb-1">Molho</label><input type="number" id="rating-molho" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
+                            <div><label for="rating-queijo" class="block text-sm font-medium text-gray-700 mb-1">Queijo</label><input type="number" id="rating-queijo" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
+                            <div><label for="rating-cobertura" class="block text-sm font-medium text-gray-700 mb-1">Cobertura</label><input type="number" id="rating-cobertura" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
+                            <div><label for="rating-pizza_equilibrio" class="block text-sm font-medium text-gray-700 mb-1">Equilíbrio</label><input type="number" id="rating-pizza_equilibrio" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
+                            <div><label for="rating-pizza_atendimento" class="block text-sm font-medium text-gray-700 mb-1">Atendimento</label><input type="number" id="rating-pizza_atendimento" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
+                            <div><label for="rating-pizza_ambiente" class="block text-sm font-medium text-gray-700 mb-1">Ambiente</label><input type="number" id="rating-pizza_ambiente" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
+                            <div><label for="rating-pizza_cardapio" class="block text-sm font-medium text-gray-700 mb-1">Cardápio</label><input type="number" id="rating-pizza_cardapio" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
+                            <div><label for="rating-pizza_tempo" class="block text-sm font-medium text-gray-700 mb-1">Tempo</label><input type="number" id="rating-pizza_tempo" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
+                            <div><label for="rating-pizza_custo" class="block text-sm font-medium text-gray-700 mb-1">Custo</label><input type="number" id="rating-pizza_custo" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
+                        </div>
+                        <div>
+                            <label for="diferencial" class="block text-sm font-medium text-gray-700 mb-1">Diferencial</label>
+                            <textarea id="diferencial" rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" placeholder="O que torna esta pizza especial?"></textarea>
+                        </div>
+                    </div>
 
-    <!-- Supabase Logic -->
-    <script type="module">
-        document.addEventListener('DOMContentLoaded', () => {
-            const { createClient } = supabase;
+                    <div>
+                        <label for="comment" class="block text-sm font-medium text-gray-700 mb-1">Comentário</label>
+                        <textarea id="comment" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" placeholder="Descreva sua experiência..." required></textarea>
+                    </div>
+                </div>
+                <div id="form-error" class="text-red-500 text-sm mt-4 text-center font-semibold hidden"></div>
+                <div class="mt-8 flex justify-end gap-3">
+                    <button type="button" id="closeModalBtn" class="bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300 transition-colors">Cancelar</button>
+                    <button type="submit" id="submit-btn" class="bg-purple-600 text-white font-semibold py-2 px-6 rounded-lg shadow-md hover:bg-purple-700 transition-colors">Publicar</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-            const SUPABASE_URL = 'https://pwkupqqwcbixfwbxcnpa.supabase.co';
-            const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB3a3VwcXF3Y2JpeGZ3YnhjbnBhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYxMjI5MzQsImV4cCI6MjA3MTY5ODkzNH0.nI5x2tGh6uNgmjjdsoAfrKE0gCMbwSqkIqA3FQQlVaI';
+        <script type="module">
+        document.addEventListener('DOMContentLoaded', () => {
+            const { createClient } = supabase;
 
-            const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            const SUPABASE_URL = 'https://pwkupqqwcbixfwbxcnpa.supabase.co';
+            const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB3a3VwcXF3Y2JpeGZ3YnhjbnBhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYxMjI5MzQsImV4cCI6MjA3MTY5ODkzNH0.nI5x2tGh6uNgmjjdsoAfrKE0gCMbwSqkIqA3FQQlVaI';
 
-            // --- ELEMENTOS DO DOM ---
-            const reviewsFeed = document.getElementById('reviews-feed');
-            const rankingList = document.getElementById('ranking-list');
-            const reviewForm = document.getElementById('review-form');
-            const modal = document.getElementById('reviewModal');
-            const modalPanel = document.getElementById('modal-panel');
-            const openModalBtn = document.getElementById('openModalBtn');
-            const closeModalBtn = document.getElementById('closeModalBtn');
-            const formError = document.getElementById('form-error');
-            const loadingOverlay = document.getElementById('loading-overlay');
-            const userNameSelect = document.getElementById('user-name');
-            const modalTitle = document.getElementById('modal-title');
-            const submitBtn = document.getElementById('submit-btn');
-            const editReviewIdInput = document.getElementById('edit-review-id');
-            const totalReviewsCountEl = document.getElementById('total-reviews-count');
-            const categoryTabs = document.querySelectorAll('.category-tab');
-            const categoryRadios = document.querySelectorAll('input[name="category"]');
-            const hamburguerFields = document.getElementById('hamburguer-fields');
-            const pizzaFields = document.getElementById('pizza-fields');
+            const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-            let allReviews = [];
-            let currentCategory = 'hamburguer';
+            // --- ELEMENTOS DO DOM ---
+            const reviewsFeed = document.getElementById('reviews-feed');
+            const rankingList = document.getElementById('ranking-list');
+            const reviewForm = document.getElementById('review-form');
+            const modal = document.getElementById('reviewModal');
+            const modalPanel = document.getElementById('modal-panel');
+            const openModalBtn = document.getElementById('openModalBtn');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            const formError = document.getElementById('form-error');
+            const loadingOverlay = document.getElementById('loading-overlay');
+            const userNameSelect = document.getElementById('user-name');
+            const modalTitle = document.getElementById('modal-title');
+            const submitBtn = document.getElementById('submit-btn');
+            const editReviewIdInput = document.getElementById('edit-review-id');
+            const totalReviewsCountEl = document.getElementById('total-reviews-count');
+            const categoryTabs = document.querySelectorAll('.category-tab');
+            const categoryRadios = document.querySelectorAll('input[name="category"]');
+            const hamburguerFields = document.getElementById('hamburguer-fields');
+            const pizzaFields = document.getElementById('pizza-fields');
 
-            // --- DADOS LOCAIS (AVATARES) ---
-            const userAvatars = {
-                'Arcanjo': '🧑‍🍳', 'Luana': '👩‍💻', 'Michel': '👨‍🎨', 'Julia': '👩‍💼',
-                'Beatriz': '🧑‍🚀', 'Willian': '👨‍🔬', 'Manu': '👩‍🎨', 'Victor': '👨‍💻',
-                'Tirras': '🧑‍🍳', 'Kyvia': '👩‍🚀', 'Clévio': '👨‍🔬',
-            };
-            
-            // --- GESTÃO DE UTILIZADOR ANÓNIMO ---
-            function getAnonymousUserId() {
-                let userId = localStorage.getItem('anonymousUserId');
-                if (!userId) {
-                    userId = crypto.randomUUID();
-                    localStorage.setItem('anonymousUserId', userId);
-                }
-                return userId;
-            }
+            let allReviews = [];
+            let currentCategory = 'hamburguer';
 
-            const currentUserId = getAnonymousUserId();
+            // --- DADOS LOCAIS (AVATARES) ---
+            const userAvatars = {
+                'Arcanjo': '🧑‍🍳', 'Luana': '👩‍💻', 'Michel': '👨‍🎨', 'Julia': '👩‍💼',
+                'Beatriz': '🧑‍🚀', 'Willian': '👨‍🔬', 'Manu': '👩‍🎨', 'Victor': '👨‍💻',
+                'Tirras': '🧑‍🍳', 'Kyvia': '👩‍🚀', 'Clévio': '👨‍🔬',
+            };
+            
+            // --- GESTÃO DE UTILIZADOR ANÓNIMO ---
+            function getAnonymousUserId() {
+                let userId = localStorage.getItem('anonymousUserId');
+                if (!userId) {
+                    userId = crypto.randomUUID();
+                    localStorage.setItem('anonymousUserId', userId);
+                }
+                return userId;
+            }
 
-            // --- FUNÇÕES ---
-            const calculateFinalScore = (ratings) => {
-                const scores = Object.values(ratings);
-                const sum = scores.reduce((acc, score) => acc + score, 0);
-                return sum / scores.length;
-            };
-            
-            const createReviewCardHTML = (review) => {
-                const finalScore = calculateFinalScore(review.ratings);
+            const currentUserId = getAnonymousUserId();
 
-                const actionButtonsHTML = `
-                    <button data-review-id="${review.id}" class="edit-btn text-gray-400 hover:text-blue-500 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
-                    </button>
-                    <button data-review-id="${review.id}" class="delete-btn text-gray-400 hover:text-red-500 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-                    </button>
-                `;
-                
-                let ratingsHTML = '';
-                if (review.category === 'hamburguer') {
-                    ratingsHTML = `
-                        <div><span class="font-semibold block sm:inline">Hambúrguer:</span> ${review.ratings.hamburguer.toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Pão:</span> ${review.ratings.pao.toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Equilíbrio:</span> ${review.ratings.equilibrio.toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Acompanh.:</span> ${review.ratings.acompanhamentos.toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Atendimento:</span> ${review.ratings.atendimento.toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Ambiente:</span> ${review.ratings.ambiente.toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Cardápio:</span> ${review.ratings.cardapio.toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Tempo:</span> ${review.ratings.tempo.toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Custo:</span> ${review.ratings.custo.toFixed(1)}</div>
-                    `;
-                } else if (review.category === 'pizza') {
-                     ratingsHTML = `
-                        <div><span class="font-semibold block sm:inline">Massa:</span> ${review.ratings.massa.toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Molho:</span> ${review.ratings.molho.toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Queijo:</span> ${review.ratings.queijo.toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Cobertura:</span> ${review.ratings.cobertura.toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Equilíbrio:</span> ${review.ratings.pizza_equilibrio.toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Atendimento:</span> ${review.ratings.pizza_atendimento.toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Ambiente:</span> ${review.ratings.pizza_ambiente.toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Cardápio:</span> ${review.ratings.pizza_cardapio.toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Tempo:</span> ${review.ratings.pizza_tempo.toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Custo:</span> ${review.ratings.pizza_custo.toFixed(1)}</div>
-                    `;
-                }
-                
-                let diferencialHTML = '';
-                if (review.category === 'pizza' && review.diferencial) {
-                    diferencialHTML = `
-                        <div class="mt-4 pt-4 border-t border-gray-200 col-span-full">
-                            <h4 class="font-semibold text-sm text-gray-800">Diferencial:</h4>
-                            <p class="text-gray-700 text-sm whitespace-pre-wrap">${review.diferencial}</p>
-                        </div>
-                    `;
-                }
+            // --- FUNÇÕES ---
+            const calculateFinalScore = (ratings) => {
+                const scores = Object.values(ratings);
+                const sum = scores.reduce((acc, score) => acc + score, 0);
+                return sum / scores.length;
+            };
+            
+            const createReviewCardHTML = (review) => {
+                const finalScore = calculateFinalScore(review.ratings);
 
-                return `
-                    <div class="bg-gray-50 border border-gray-200 rounded-lg p-5 transition-shadow hover:shadow-md">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <h3 class="font-bold text-lg text-gray-900">${review.restaurant_name}</h3>
-                                <div class="flex items-center gap-2 text-sm text-gray-600 mt-1">
-                                    <span class="text-2xl">${userAvatars[review.user_name] || '👤'}</span>
-                                    <span>${review.user_name}</span>
-                                </div>
-                            </div>
-                            <div class="text-right flex items-start gap-2">
-                                <div>
-                                    <span class="font-bold text-2xl text-purple-600">${finalScore.toFixed(1)}</span>
-                                    <span class="text-xs text-gray-500 block">NOTA FINAL</span>
-                                </div>
-                                <div class="flex flex-col gap-2">${actionButtonsHTML}</div>
-                            </div>
-                        </div>
-                        <p class="text-gray-700 my-4 whitespace-pre-wrap">${review.comment}</p>
-                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-2 bg-gray-100 rounded-md p-3 text-center text-xs sm:text-sm">
-                            ${ratingsHTML}
-                        </div>
-                        ${diferencialHTML}
-                    </div>
-                `;
-            };
+                const actionButtonsHTML = `
+                    <button data-review-id="${review.id}" class="edit-btn text-gray-400 hover:text-blue-500 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+                    </button>
+                    <button data-review-id="${review.id}" class="delete-btn text-gray-400 hover:text-red-500 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                    </button>
+                `;
+                
+                let ratingsHTML = '';
+                if (review.category === 'hamburguer') {
+                    ratingsHTML = `
+                        <div><span class="font-semibold block sm:inline">Hambúrguer:</span> ${review.ratings.hamburguer.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Pão:</span> ${review.ratings.pao.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Equilíbrio:</span> ${review.ratings.equilibrio.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Acompanh.:</span> ${review.ratings.acompanhamentos.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Atendimento:</span> ${review.ratings.atendimento.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Ambiente:</span> ${review.ratings.ambiente.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Cardápio:</span> ${review.ratings.cardapio.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Tempo:</span> ${review.ratings.tempo.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Custo:</span> ${review.ratings.custo.toFixed(1)}</div>
+                    `;
+                } else if (review.category === 'pizza') {
+                     ratingsHTML = `
+                        <div><span class="font-semibold block sm:inline">Massa:</span> ${review.ratings.massa.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Molho:</span> ${review.ratings.molho.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Queijo:</span> ${review.ratings.queijo.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Cobertura:</span> ${review.ratings.cobertura.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Equilíbrio:</span> ${review.ratings.pizza_equilibrio.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Atendimento:</span> ${review.ratings.pizza_atendimento.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Ambiente:</span> ${review.ratings.pizza_ambiente.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Cardápio:</span> ${review.ratings.pizza_cardapio.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Tempo:</span> ${review.ratings.pizza_tempo.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Custo:</span> ${review.ratings.pizza_custo.toFixed(1)}</div>
+                    `;
+                }
+                
+                let diferencialHTML = '';
+                if (review.category === 'pizza' && review.diferencial) {
+                    diferencialHTML = `
+                        <div class="mt-4 pt-4 border-t border-gray-200 col-span-full">
+                            <h4 class="font-semibold text-sm text-gray-800">Diferencial:</h4>
+                            <p class="text-gray-700 text-sm whitespace-pre-wrap">${review.diferencial}</p>
+                        </div>
+                    `;
+                }
 
-            const renderRanking = () => {
-                const filteredReviews = allReviews.filter(r => r.category === currentCategory);
-                if (filteredReviews.length === 0) {
-                    rankingList.innerHTML = `<p class="text-sm text-gray-500 text-center p-4">O ranking aparecerá aqui quando houver avaliações.</p>`;
-                    return;
-                }
+                return `
+                    <div class="bg-gray-50 border border-gray-200 rounded-lg p-5 transition-shadow hover:shadow-md">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="font-bold text-lg text-gray-900">${review.restaurant_name}</h3>
+                                <div class="flex items-center gap-2 text-sm text-gray-600 mt-1">
+                                    <span class="text-2xl">${userAvatars[review.user_name] || '👤'}</span>
+                                    <span>${review.user_name}</span>
+                                </div>
+                            </div>
+                            <div class="text-right flex items-start gap-2">
+                                <div>
+                                    <span class="font-bold text-2xl text-purple-600">${finalScore.toFixed(1)}</span>
+                                    <span class="text-xs text-gray-500 block">NOTA FINAL</span>
+                                </div>
+                                <div class="flex flex-col gap-2">${actionButtonsHTML}</div>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 my-4 whitespace-pre-wrap">${review.comment}</p>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-2 bg-gray-100 rounded-md p-3 text-center text-xs sm:text-sm">
+                            ${ratingsHTML}
+                        </div>
+                        ${diferencialHTML}
+                    </div>
+                `;
+            };
 
-                const restaurantScores = {};
-                filteredReviews.forEach(review => {
-                    const normalizedName = review.restaurant_name.trim().toLowerCase();
-                    if (!restaurantScores[normalizedName]) {
-                        restaurantScores[normalizedName] = { 
-                            originalName: review.restaurant_name.trim(),
-                            scores: [] 
-                        };
-                    }
-                    restaurantScores[normalizedName].scores.push(calculateFinalScore(review.ratings));
-                });
+            const renderRanking = () => {
+                const filteredReviews = allReviews.filter(r => r.category === currentCategory);
+                if (filteredReviews.length === 0) {
+                    rankingList.innerHTML = `<p class="text-sm text-gray-500 text-center p-4">O ranking aparecerá aqui quando houver avaliações.</p>`;
+                    return;
+                }
 
-                const rankedList = Object.values(restaurantScores).map(resto => {
-                    const average = resto.scores.reduce((a, b) => a + b, 0) / resto.scores.length;
-                    return { name: resto.originalName, averageScore: average };
-                }).sort((a, b) => b.averageScore - a.averageScore);
+                const restaurantScores = {};
+                filteredReviews.forEach(review => {
+                    const normalizedName = review.restaurant_name.trim().toLowerCase();
+                    if (!restaurantScores[normalizedName]) {
+                        restaurantScores[normalizedName] = { 
+                            originalName: review.restaurant_name.trim(),
+                            scores: [] 
+                        };
+                    }
+                    restaurantScores[normalizedName].scores.push(calculateFinalScore(review.ratings));
+                });
 
-                rankingList.innerHTML = rankedList.map((resto, index) => `
-                    <div class="flex items-center justify-between bg-gray-50 p-3 rounded-lg">
-                        <div class="flex items-center gap-3">
-                            <span class="font-bold text-lg text-purple-600 w-6">${index + 1}.</span>
-                            <span class="font-semibold text-gray-800">${resto.name}</span>
-                        </div>
-                        <span class="font-bold text-purple-600">${resto.averageScore.toFixed(1)}</span>
-                    </div>
-                `).join('');
-            };
+                const rankedList = Object.values(restaurantScores).map(resto => {
+                    const average = resto.scores.reduce((a, b) => a + b, 0) / resto.scores.length;
+                    return { name: resto.originalName, averageScore: average };
+                }).sort((a, b) => b.averageScore - a.averageScore);
 
-            const renderContent = () => {
-                const filteredReviews = allReviews.filter(r => r.category === currentCategory);
-                const sortedReviews = filteredReviews.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-                
-                if (sortedReviews.length > 0) {
-                    reviewsFeed.innerHTML = sortedReviews.map(createReviewCardHTML).join('');
-                } else {
-                    reviewsFeed.innerHTML = `<p class="text-sm text-gray-500 text-center p-4">Nenhuma avaliação foi feita ainda para esta categoria.</p>`;
-                }
-                
-                const count = sortedReviews.length;
-                totalReviewsCountEl.textContent = `${count} ${count === 1 ? 'avaliação registrada' : 'avaliações registradas'}`;
+                rankingList.innerHTML = rankedList.map((resto, index) => `
+                    <div class="flex items-center justify-between bg-gray-50 p-3 rounded-lg">
+                        <div class="flex items-center gap-3">
+                            <span class="font-bold text-lg text-purple-600 w-6">${index + 1}.</span>
+                            <span class="font-semibold text-gray-800">${resto.name}</span>
+                        </div>
+                        <span class="font-bold text-purple-600">${resto.averageScore.toFixed(1)}</span>
+                    </div>
+                `).join('');
+            };
 
-                renderRanking();
-                addDeleteButtonListeners();
-                addEditButtonListeners();
-            };
-            
-            const addDeleteButtonListeners = () => {
-                document.querySelectorAll('.delete-btn').forEach(button => {
-                    button.addEventListener('click', (e) => {
-                        const reviewIdToDelete = e.currentTarget.dataset.reviewId;
-                        handleDeleteReview(reviewIdToDelete);
-                    });
-                });
-            };
+            const renderContent = () => {
+                const filteredReviews = allReviews.filter(r => r.category === currentCategory);
+                const sortedReviews = filteredReviews.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                
+                if (sortedReviews.length > 0) {
+                    reviewsFeed.innerHTML = sortedReviews.map(createReviewCardHTML).join('');
+                } else {
+                    reviewsFeed.innerHTML = `<p class="text-sm text-gray-500 text-center p-4">Nenhuma avaliação foi feita ainda para esta categoria.</p>`;
+                }
+                
+                const count = sortedReviews.length;
+                totalReviewsCountEl.textContent = `${count} ${count === 1 ? 'avaliação registrada' : 'avaliações registradas'}`;
 
-            const addEditButtonListeners = () => {
-                document.querySelectorAll('.edit-btn').forEach(button => {
-                    button.addEventListener('click', (e) => {
-                        const reviewIdToEdit = e.currentTarget.dataset.reviewId;
-                        handleEditReview(reviewIdToEdit);
-                    });
-                });
-            };
+                renderRanking();
+                addDeleteButtonListeners();
+                addEditButtonListeners();
+            };
+            
+            const addDeleteButtonListeners = () => {
+                document.querySelectorAll('.delete-btn').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const reviewIdToDelete = e.currentTarget.dataset.reviewId;
+                        handleDeleteReview(reviewIdToDelete);
+                    });
+                });
+            };
 
-            const handleDeleteReview = async (reviewId) => {
-                if (!reviewId) return;
-                const { error } = await supabaseClient
-                    .from('reviews')
-                    .delete()
-                    .eq('id', reviewId);
-                
-                if (error) {
-                    console.error("Erro ao apagar avaliação:", error);
-                }
-            };
+            const addEditButtonListeners = () => {
+                document.querySelectorAll('.edit-btn').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const reviewIdToEdit = e.currentTarget.dataset.reviewId;
+                        handleEditReview(reviewIdToEdit);
+                    });
+                });
+            };
 
-            const handleEditReview = (reviewId) => {
-                const reviewToEdit = allReviews.find(review => review.id == reviewId);
-                if (!reviewToEdit) return;
+            const handleDeleteReview = async (reviewId) => {
+                if (!reviewId) return;
+                const { error } = await supabaseClient
+                    .from('reviews')
+                    .delete()
+                    .eq('id', reviewId);
+                
+                if (error) {
+                    console.error("Erro ao apagar avaliação:", error);
+                }
+            };
 
-                // Preenche o formulário
-                editReviewIdInput.value = reviewToEdit.id;
-                document.querySelector(`input[name="category"][value="${reviewToEdit.category}"]`).checked = true;
-                toggleCategoryFields(reviewToEdit.category);
-                
-                userNameSelect.value = reviewToEdit.user_name;
-                document.getElementById('restaurant-name').value = reviewToEdit.restaurant_name;
-                document.getElementById('comment').value = reviewToEdit.comment;
-                document.getElementById('diferencial').value = reviewToEdit.diferencial || '';
-                
-                for (const key in reviewToEdit.ratings) {
-                    const inputEl = document.getElementById(`rating-${key}`);
-                    if(inputEl) inputEl.value = reviewToEdit.ratings[key];
-                }
+            const handleEditReview = (reviewId) => {
+                const reviewToEdit = allReviews.find(review => review.id == reviewId);
+                if (!reviewToEdit) return;
 
-                modalTitle.textContent = "Editar Avaliação";
-                submitBtn.textContent = "Salvar Alterações";
-                openModal();
-            };
+                // Preenche o formulário
+                editReviewIdInput.value = reviewToEdit.id;
+                document.querySelector(`input[name="category"][value="${reviewToEdit.category}"]`).checked = true;
+                toggleCategoryFields(reviewToEdit.category);
+                
+                userNameSelect.value = reviewToEdit.user_name;
+                document.getElementById('restaurant-name').value = reviewToEdit.restaurant_name;
+                document.getElementById('comment').value = reviewToEdit.comment;
+                document.getElementById('diferencial').value = reviewToEdit.diferencial || '';
+                
+                for (const key in reviewToEdit.ratings) {
+                    const inputEl = document.getElementById(`rating-${key}`);
+                    if(inputEl) inputEl.value = reviewToEdit.ratings[key];
+                }
 
-            const handleFormSubmit = async (event) => {
-                event.preventDefault();
-                
-                const selectedCategory = document.querySelector('input[name="category"]:checked').value;
-                const fields = selectedCategory === 'hamburguer' ? hamburguerFields : pizzaFields;
-                
-                let isFormValid = true;
-                formError.classList.add('hidden');
-                fields.querySelectorAll('.rating-input').forEach(input => {
-                    input.classList.remove('border-red-500');
-                    const value = parseFloat(input.value);
-                    if (isNaN(value) || value > 10 || value < 0) {
-                        isFormValid = false;
-                        input.classList.add('border-red-500');
-                    }
-                });
+                modalTitle.textContent = "Editar Avaliação";
+                submitBtn.textContent = "Salvar Alterações";
+                openModal();
+            };
 
-                if (!isFormValid) {
-                    formError.textContent = 'As notas devem ser um número entre 0 e 10.';
-                    formError.classList.remove('hidden');
-                    return;
-                }
+            const handleFormSubmit = async (event) => {
+                event.preventDefault();
+                
+                const selectedCategory = document.querySelector('input[name="category"]:checked').value;
+                const fields = selectedCategory === 'hamburguer' ? hamburguerFields : pizzaFields;
+                
+                let isFormValid = true;
+                formError.classList.add('hidden');
+                fields.querySelectorAll('.rating-input').forEach(input => {
+                    input.classList.remove('border-red-500');
+                    const value = parseFloat(input.value);
+                    if (isNaN(value) || value > 10 || value < 0) {
+                        isFormValid = false;
+                        input.classList.add('border-red-500');
+                    }
+                });
 
-                let ratings = {};
-                if (selectedCategory === 'hamburguer') {
-                    ratings = {
-                        hamburguer: parseFloat(document.getElementById('rating-hamburguer').value),
-                        pao: parseFloat(document.getElementById('rating-pao').value),
-                        equilibrio: parseFloat(document.getElementById('rating-equilibrio').value),
-                        acompanhamentos: parseFloat(document.getElementById('rating-acompanhamentos').value),
-                        atendimento: parseFloat(document.getElementById('rating-atendimento').value),
-                        ambiente: parseFloat(document.getElementById('rating-ambiente').value),
-                        cardapio: parseFloat(document.getElementById('rating-cardapio').value),
-                        tempo: parseFloat(document.getElementById('rating-tempo').value),
-                        custo: parseFloat(document.getElementById('rating-custo').value)
-                    };
-                } else {
-                    ratings = {
-                        massa: parseFloat(document.getElementById('rating-massa').value),
-                        molho: parseFloat(document.getElementById('rating-molho').value),
-                        queijo: parseFloat(document.getElementById('rating-queijo').value),
-                        cobertura: parseFloat(document.getElementById('rating-cobertura').value),
-                        pizza_equilibrio: parseFloat(document.getElementById('rating-pizza_equilibrio').value),
-                        pizza_atendimento: parseFloat(document.getElementById('rating-pizza_atendimento').value),
-                        pizza_ambiente: parseFloat(document.getElementById('rating-pizza_ambiente').value),
-                        pizza_cardapio: parseFloat(document.getElementById('rating-pizza_cardapio').value),
-                        pizza_tempo: parseFloat(document.getElementById('rating-pizza_tempo').value),
-                        pizza_custo: parseFloat(document.getElementById('rating-pizza_custo').value)
-                    };
-                }
+                if (!isFormValid) {
+                    formError.textContent = 'As notas devem ser um número entre 0 e 10.';
+                    formError.classList.remove('hidden');
+                    return;
+                }
 
-                const reviewData = {
-                    author_id: currentUserId,
-                    user_name: userNameSelect.value,
-                    restaurant_name: document.getElementById('restaurant-name').value.trim(),
-                    ratings: ratings,
-                    comment: document.getElementById('comment').value,
-                    category: selectedCategory,
-                    diferencial: selectedCategory === 'pizza' ? document.getElementById('diferencial').value : null,
-                };
+                let ratings = {};
+                if (selectedCategory === 'hamburguer') {
+                    ratings = {
+                        hamburguer: parseFloat(document.getElementById('rating-hamburguer').value),
+                        pao: parseFloat(document.getElementById('rating-pao').value),
+                        equilibrio: parseFloat(document.getElementById('rating-equilibrio').value),
+                        acompanhamentos: parseFloat(document.getElementById('rating-acompanhamentos').value),
+                        atendimento: parseFloat(document.getElementById('rating-atendimento').value),
+                        ambiente: parseFloat(document.getElementById('rating-ambiente').value),
+                        cardapio: parseFloat(document.getElementById('rating-cardapio').value),
+                        tempo: parseFloat(document.getElementById('rating-tempo').value),
+                        custo: parseFloat(document.getElementById('rating-custo').value)
+                    };
+                } else {
+                    ratings = {
+                        massa: parseFloat(document.getElementById('rating-massa').value),
+                        molho: parseFloat(document.getElementById('rating-molho').value),
+                        queijo: parseFloat(document.getElementById('rating-queijo').value),
+                        cobertura: parseFloat(document.getElementById('rating-cobertura').value),
+                        pizza_equilibrio: parseFloat(document.getElementById('rating-pizza_equilibrio').value),
+                        pizza_atendimento: parseFloat(document.getElementById('rating-pizza_atendimento').value),
+                        pizza_ambiente: parseFloat(document.getElementById('rating-pizza_ambiente').value),
+                        pizza_cardapio: parseFloat(document.getElementById('rating-pizza_cardapio').value),
+                        pizza_tempo: parseFloat(document.getElementById('rating-pizza_tempo').value),
+                        pizza_custo: parseFloat(document.getElementById('rating-pizza_custo').value)
+                    };
+                }
 
-                const editingId = editReviewIdInput.value;
-                let error;
+                const reviewData = {
+                    author_id: currentUserId,
+                    user_name: userNameSelect.value,
+                    restaurant_name: document.getElementById('restaurant-name').value.trim(),
+                    ratings: ratings,
+                    comment: document.getElementById('comment').value,
+                    category: selectedCategory,
+                    diferencial: selectedCategory === 'pizza' ? document.getElementById('diferencial').value : null,
+                };
 
-                if (editingId) {
-                    const { error: updateError } = await supabaseClient.from('reviews').update(reviewData).eq('id', editingId);
-                    error = updateError;
-                } else {
-                    const { error: insertError } = await supabaseClient.from('reviews').insert([reviewData]);
-                    error = insertError;
-                }
-                
-                if (error) {
-                    console.error("Erro ao salvar avaliação:", error);
-                    formError.textContent = "Erro ao salvar. Tente novamente.";
-                    formError.classList.remove('hidden');
-                } else {
-                    reviewForm.reset();
-                    closeModal();
-                }
-            };
+                const editingId = editReviewIdInput.value;
+                let error;
 
-            // --- LISTENER DO SUPABASE ---
-            async function fetchAndRenderReviews() {
-                const { data, error } = await supabaseClient.from('reviews').select('*');
-                if (error) {
-                    console.error("Erro ao buscar avaliações:", error);
-                    loadingOverlay.innerHTML = "<p class='text-red-500'>Erro ao carregar dados.</p>";
-                } else {
-                    allReviews = data;
-                    renderContent();
-                    loadingOverlay.classList.add('hidden');
-                }
-            }
+                if (editingId) {
+                    const { error: updateError } = await supabaseClient.from('reviews').update(reviewData).eq('id', editingId);
+                    error = updateError;
+                } else {
+                    const { error: insertError } = await supabaseClient.from('reviews').insert([reviewData]);
+                    error = insertError;
+                }
+                
+                if (error) {
+                    console.error("Erro ao salvar avaliação:", error);
+                    formError.textContent = "Erro ao salvar. Tente novamente.";
+                    formError.classList.remove('hidden');
+                } else {
+                    reviewForm.reset();
+                    closeModal();
+                }
+            };
 
-            function toggleCategoryFields(category) {
-                if (category === 'hamburguer') {
-                    hamburguerFields.classList.remove('hidden');
-                    pizzaFields.classList.add('hidden');
-                    pizzaFields.querySelectorAll('input, textarea').forEach(i => i.required = false);
-                    hamburguerFields.querySelectorAll('input').forEach(i => i.required = true);
-                } else {
-                    hamburguerFields.classList.add('hidden');
-                    pizzaFields.classList.remove('hidden');
-                    hamburguerFields.querySelectorAll('input').forEach(i => i.required = false);
-                    pizzaFields.querySelectorAll('input').forEach(i => i.required = true);
-                }
-            }
+            // --- LISTENER DO SUPABASE ---
+            async function fetchAndRenderReviews() {
+                const { data, error } = await supabaseClient.from('reviews').select('*');
+                if (error) {
+                    console.error("Erro ao buscar avaliações:", error);
+                    loadingOverlay.innerHTML = "<p class='text-red-500'>Erro ao carregar dados.</p>";
+                } else {
+                    allReviews = data;
+                    renderContent();
+                    loadingOverlay.classList.add('hidden');
+                }
+            }
 
-            // --- INICIALIZAÇÃO E REALTIME ---
-            fetchAndRenderReviews();
+            function toggleCategoryFields(category) {
+                if (category === 'hamburguer') {
+                    hamburguerFields.classList.remove('hidden');
+                    pizzaFields.classList.add('hidden');
+                    pizzaFields.querySelectorAll('input, textarea').forEach(i => i.required = false);
+                    hamburguerFields.querySelectorAll('input').forEach(i => i.required = true);
+                } else {
+                    hamburguerFields.classList.add('hidden');
+                    pizzaFields.classList.remove('hidden');
+                    hamburguerFields.querySelectorAll('input').forEach(i => i.required = false);
+                    pizzaFields.querySelectorAll('input').forEach(i => i.required = true);
+                }
+            }
 
-            supabaseClient.channel('public:reviews')
-              .on('postgres_changes', { event: '*', schema: 'public', table: 'reviews' }, payload => {
-                fetchAndRenderReviews();
-              })
-              .subscribe();
+            // --- INICIALIZAÇÃO E REALTIME ---
+            fetchAndRenderReviews();
 
-            const openModal = () => {
-                formError.classList.add('hidden');
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
-                setTimeout(() => { modalPanel.classList.remove('scale-95', 'opacity-0'); }, 50);
-            };
+            supabaseClient.channel('public:reviews')
+              .on('postgres_changes', { event: '*', schema: 'public', table: 'reviews' }, payload => {
+                fetchAndRenderReviews();
+              })
+              .subscribe();
 
-            const closeModal = () => {
-                modalPanel.classList.add('scale-95', 'opacity-0');
-                setTimeout(() => {
-                    modal.classList.add('hidden');
-                    modal.classList.remove('flex');
-                    reviewForm.reset();
-                    editReviewIdInput.value = '';
-                    modalTitle.textContent = "Sua Avaliação";
-                    submitBtn.textContent = "Publicar";
-                    toggleCategoryFields('hamburguer');
-                }, 200);
-            };
+            const openModal = () => {
+                formError.classList.add('hidden');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                setTimeout(() => { modalPanel.classList.remove('scale-95', 'opacity-0'); }, 50);
+            };
 
-            // --- EVENT LISTENERS ---
-            reviewForm.addEventListener('submit', handleFormSubmit);
-            openModalBtn.addEventListener('click', () => {
-                editReviewIdInput.value = '';
-                modalTitle.textContent = "Sua Avaliação";
-                submitBtn.textContent = "Publicar";
-                toggleCategoryFields(currentCategory);
-                document.querySelector(`input[name="category"][value="${currentCategory}"]`).checked = true;
-                openModal();
-            });
-            closeModalBtn.addEventListener('click', closeModal);
-            modal.addEventListener('click', (e) => {
-                if (e.target.classList.contains('modal-backdrop')) {
-                    closeModal();
-                }
-            });
-            categoryTabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    currentCategory = tab.dataset.category;
-                    categoryTabs.forEach(t => t.classList.remove('tab-active', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300'));
-                    categoryTabs.forEach(t => {
-                        if (t.dataset.category === currentCategory) {
-                            t.classList.add('tab-active');
-                        } else {
-                            t.classList.add('text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
-                        }
-                    });
-                    renderContent();
-                });
-            });
-            categoryRadios.forEach(radio => {
-                radio.addEventListener('change', (e) => {
-                    toggleCategoryFields(e.target.value);
-                });
-            });
-        });
-    </script>
+            const closeModal = () => {
+                modalPanel.classList.add('scale-95', 'opacity-0');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    modal.classList.remove('flex');
+                    reviewForm.reset();
+                    editReviewIdInput.value = '';
+                    modalTitle.textContent = "Sua Avaliação";
+                    submitBtn.textContent = "Publicar";
+                    toggleCategoryFields('hamburguer');
+                }, 200);
+            };
+
+            // --- EVENT LISTENERS ---
+            reviewForm.addEventListener('submit', handleFormSubmit);
+            openModalBtn.addEventListener('click', () => {
+                editReviewIdInput.value = '';
+                modalTitle.textContent = "Sua Avaliação";
+                submitBtn.textContent = "Publicar";
+                toggleCategoryFields(currentCategory);
+                document.querySelector(`input[name="category"][value="${currentCategory}"]`).checked = true;
+                openModal();
+            });
+            closeModalBtn.addEventListener('click', closeModal);
+            modal.addEventListener('click', (e) => {
+                if (e.target.classList.contains('modal-backdrop')) {
+                    closeModal();
+                }
+            });
+            
+            // LÓGICA DAS ABAS MODIFICADA
+            categoryTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    currentCategory = tab.dataset.category;
+
+                    // Atualiza a aparência das abas
+                    categoryTabs.forEach(t => {
+                        if (t === tab) {
+                            t.classList.add('tab-active');
+                            t.classList.remove('text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
+                        } else {
+                            t.classList.remove('tab-active');
+                            t.classList.add('text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
+                        }
+                    });
+
+                    // Mostra ou esconde o conteúdo apropriado
+                    if (currentCategory === 'mapa') {
+                        mainContentGrid.classList.add('hidden');
+                        mapContent.classList.remove('hidden');
+                        openModalBtn.style.display = 'none'; // Esconde o botão "Nova Avaliação"
+                    } else {
+                        mainContentGrid.classList.remove('hidden');
+                        mapContent.classList.add('hidden');
+                        openModalBtn.style.display = 'flex'; // Mostra o botão novamente
+                        renderContent();
+                    }
+                });
+            });
+
+            categoryRadios.forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    toggleCategoryFields(e.target.value);
+                });
+            });
+        });
+    </script>
 </body>
 </html>
