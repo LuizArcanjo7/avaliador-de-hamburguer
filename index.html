@@ -82,19 +82,30 @@
 
         <div id="map-content" class="hidden">
             <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                 <h2 class="text-xl font-bold mb-4 text-gray-800">Mapa de Hamburguerias Salvas</h2>
-                 <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d120064.09487958516!2d-44.07616116093749!3d-19.88209670716878!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1spt-BR!2sbr!4v1759061595318!5m2!1spt-BR!2sbr" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                 <h2 class="text-xl font-bold mb-4 text-gray-800">Mapa de Locais Salvos</h2>
+                 <iframe 
+                    src="" 
+                    width="100%" 
+                    height="600" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
             </div>
         </div>
 
         <main id="main-content-grid" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
             <div class="lg:col-span-1 bg-white p-6 rounded-xl shadow-sm border border-gray-200">
                 <h2 class="text-xl font-bold mb-4 text-gray-800 flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17.5a2.5 2.5 0 0 0 5 0V14.66"/><path d="M8 19h8"/><path d="M9 9h6"/><path d="M12 9V5"/></svg>
                     Ranking
                 </h2>
-                <div id="ranking-list" class="space-y-3"></div>
+                <div id="ranking-list" class="space-y-3">
+                    </div>
             </div>
+
             <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-gray-200">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2">
@@ -103,7 +114,8 @@
                     </h2>
                     <p id="total-reviews-count" class="text-sm font-medium text-gray-500"></p>
                 </div>
-                <div id="reviews-feed" class="space-y-4"></div>
+                <div id="reviews-feed" class="space-y-4">
+                    </div>
             </div>
         </main>
     </div>
@@ -114,7 +126,9 @@
             <form id="review-form" class="p-8">
                 <h3 id="modal-title" class="text-2xl font-bold mb-2 text-gray-900">Sua Avaliação</h3>
                 <p class="text-gray-500 mb-6">Dê notas de 0 a 10 para cada critério.</p>
+                
                 <input type="hidden" id="edit-review-id">
+
                 <div class="space-y-5">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">O que você está avaliando?</label>
@@ -129,6 +143,7 @@
                             </label>
                         </div>
                     </div>
+
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label for="user-name" class="block text-sm font-medium text-gray-700 mb-1">Seu Nome</label>
@@ -151,6 +166,7 @@
                             <input type="text" id="restaurant-name" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required>
                         </div>
                     </div>
+                    
                     <div id="hamburguer-fields" class="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-5">
                         <div><label for="rating-hamburguer" class="block text-sm font-medium text-gray-700 mb-1">Hambúrguer</label><input type="number" id="rating-hamburguer" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required></div>
                         <div><label for="rating-pao" class="block text-sm font-medium text-gray-700 mb-1">Pão</label><input type="number" id="rating-pao" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required></div>
@@ -162,6 +178,7 @@
                         <div><label for="rating-tempo" class="block text-sm font-medium text-gray-700 mb-1">Tempo</label><input type="number" id="rating-tempo" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required></div>
                         <div><label for="rating-custo" class="block text-sm font-medium text-gray-700 mb-1">Custo</label><input type="number" id="rating-custo" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required></div>
                     </div>
+
                     <div id="pizza-fields" class="hidden space-y-5">
                         <div class="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-5">
                             <div><label for="rating-massa" class="block text-sm font-medium text-gray-700 mb-1">Massa</label><input type="number" id="rating-massa" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
@@ -180,6 +197,7 @@
                             <textarea id="diferencial" rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" placeholder="O que torna esta pizza especial?"></textarea>
                         </div>
                     </div>
+
                     <div>
                         <label for="comment" class="block text-sm font-medium text-gray-700 mb-1">Comentário</label>
                         <textarea id="comment" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" placeholder="Descreva sua experiência..." required></textarea>
@@ -203,6 +221,7 @@
 
             const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+            // --- ELEMENTOS DO DOM ---
             const reviewsFeed = document.getElementById('reviews-feed');
             const rankingList = document.getElementById('ranking-list');
             const reviewForm = document.getElementById('review-form');
@@ -221,18 +240,21 @@
             const categoryRadios = document.querySelectorAll('input[name="category"]');
             const hamburguerFields = document.getElementById('hamburguer-fields');
             const pizzaFields = document.getElementById('pizza-fields');
+            // NOVOS ELEMENTOS DO MAPA
             const mainContentGrid = document.getElementById('main-content-grid');
             const mapContent = document.getElementById('map-content');
 
             let allReviews = [];
             let currentCategory = 'hamburguer';
 
+            // --- DADOS LOCAIS (AVATARES) ---
             const userAvatars = {
                 'Arcanjo': '🧑‍🍳', 'Luana': '👩‍💻', 'Michel': '👨‍🎨', 'Julia': '👩‍💼',
                 'Beatriz': '🧑‍🚀', 'Willian': '👨‍🔬', 'Manu': '👩‍🎨', 'Victor': '👨‍💻',
                 'Tirras': '🧑‍🍳', 'Kyvia': '👩‍🚀', 'Clévio': '👨‍🔬',
             };
             
+            // --- GESTÃO DE UTILIZADOR ANÓNIMO ---
             function getAnonymousUserId() {
                 let userId = localStorage.getItem('anonymousUserId');
                 if (!userId) {
@@ -241,17 +263,20 @@
                 }
                 return userId;
             }
+
             const currentUserId = getAnonymousUserId();
 
+            // --- FUNÇÕES ---
             const calculateFinalScore = (ratings) => {
-                if (!ratings) return 0;
-                const scores = Object.values(ratings);
+                const scores = Object.values(ratings || {});
+                if (scores.length === 0) return 0;
                 const sum = scores.reduce((acc, score) => acc + (parseFloat(score) || 0), 0);
-                return scores.length > 0 ? sum / scores.length : 0;
+                return sum / scores.length;
             };
             
             const createReviewCardHTML = (review) => {
                 const finalScore = calculateFinalScore(review.ratings);
+
                 const actionButtonsHTML = `
                     <button data-review-id="${review.id}" class="edit-btn text-gray-400 hover:text-blue-500 transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
@@ -262,30 +287,31 @@
                 `;
                 
                 let ratingsHTML = '';
+                const ratings = review.ratings || {};
                 if (review.category === 'hamburguer') {
                     ratingsHTML = `
-                        <div><span class="font-semibold block sm:inline">Hambúrguer:</span> ${review.ratings.hamburguer.toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Pão:</span> ${review.ratings.pao.toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Equilíbrio:</span> ${review.ratings.equilibrio.toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Acompanh.:</span> ${review.ratings.acompanhamentos.toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Atendimento:</span> ${review.ratings.atendimento.toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Ambiente:</span> ${review.ratings.ambiente.toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Cardápio:</span> ${review.ratings.cardapio.toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Tempo:</span> ${review.ratings.tempo.toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Custo:</span> ${review.ratings.custo.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Hambúrguer:</span> ${(ratings.hamburguer || 0).toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Pão:</span> ${(ratings.pao || 0).toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Equilíbrio:</span> ${(ratings.equilibrio || 0).toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Acompanh.:</span> ${(ratings.acompanhamentos || 0).toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Atendimento:</span> ${(ratings.atendimento || 0).toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Ambiente:</span> ${(ratings.ambiente || 0).toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Cardápio:</span> ${(ratings.cardapio || 0).toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Tempo:</span> ${(ratings.tempo || 0).toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Custo:</span> ${(ratings.custo || 0).toFixed(1)}</div>
                     `;
                 } else if (review.category === 'pizza') {
                      ratingsHTML = `
-                        <div><span class="font-semibold block sm:inline">Massa:</span> ${review.ratings.massa.toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Molho:</span> ${review.ratings.molho.toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Queijo:</span> ${review.ratings.queijo.toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Cobertura:</span> ${review.ratings.cobertura.toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Equilíbrio:</span> ${review.ratings.pizza_equilibrio.toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Atendimento:</span> ${review.ratings.pizza_atendimento.toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Ambiente:</span> ${review.ratings.pizza_ambiente.toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Cardápio:</span> ${review.ratings.pizza_cardapio.toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Tempo:</span> ${review.ratings.pizza_tempo.toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Custo:</span> ${review.ratings.pizza_custo.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Massa:</span> ${(ratings.massa || 0).toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Molho:</span> ${(ratings.molho || 0).toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Queijo:</span> ${(ratings.queijo || 0).toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Cobertura:</span> ${(ratings.cobertura || 0).toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Equilíbrio:</span> ${(ratings.pizza_equilibrio || 0).toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Atendimento:</span> ${(ratings.pizza_atendimento || 0).toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Ambiente:</span> ${(ratings.pizza_ambiente || 0).toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Cardápio:</span> ${(ratings.pizza_cardapio || 0).toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Tempo:</span> ${(ratings.pizza_tempo || 0).toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Custo:</span> ${(ratings.pizza_custo || 0).toFixed(1)}</div>
                     `;
                 }
                 
@@ -358,6 +384,7 @@
             const renderContent = () => {
                 const filteredReviews = allReviews.filter(r => r.category === currentCategory);
                 const sortedReviews = filteredReviews.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                
                 if (sortedReviews.length > 0) {
                     reviewsFeed.innerHTML = sortedReviews.map(createReviewCardHTML).join('');
                 } else {
@@ -370,31 +397,141 @@
                 addEditButtonListeners();
             };
             
-            // O resto das suas funções (handleDelete, handleEdit, handleFormSubmit, modal, etc) viriam aqui...
-            // Por uma questão de brevidade, estou omitindo-as, mas elas devem estar no seu código final.
-            const handleDeleteReview = async (reviewId) => { /* ... sua lógica ... */ };
-            const handleEditReview = (reviewId) => { /* ... sua lógica ... */ };
-            const handleFormSubmit = async (event) => { /* ... sua lógica ... */ };
-            const openModal = () => { /* ... sua lógica ... */ };
-            const closeModal = () => { /* ... sua lógica ... */ };
+            const addDeleteButtonListeners = () => {
+                document.querySelectorAll('.delete-btn').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const reviewIdToDelete = e.currentTarget.dataset.reviewId;
+                        if(confirm('Tem certeza que deseja apagar esta avaliação?')) {
+                            handleDeleteReview(reviewIdToDelete);
+                        }
+                    });
+                });
+            };
 
-            categoryTabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    currentCategory = tab.dataset.category;
-                    categoryTabs.forEach(t => t.classList.remove('tab-active'));
-                    tab.classList.add('tab-active');
-                    if (currentCategory === 'mapa') {
-                        mainContentGrid.classList.add('hidden');
-                        mapContent.classList.remove('hidden');
-                        openModalBtn.style.display = 'none';
-                    } else {
-                        mainContentGrid.classList.remove('hidden');
-                        mapContent.classList.add('hidden');
-                        openModalBtn.style.display = 'flex';
-                        renderContent();
+            const addEditButtonListeners = () => {
+                document.querySelectorAll('.edit-btn').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const reviewIdToEdit = e.currentTarget.dataset.reviewId;
+                        handleEditReview(reviewIdToEdit);
+                    });
+                });
+            };
+
+            const handleDeleteReview = async (reviewId) => {
+                if (!reviewId) return;
+                const { error } = await supabaseClient
+                    .from('reviews')
+                    .delete()
+                    .eq('id', reviewId);
+                if (error) {
+                    console.error("Erro ao apagar avaliação:", error);
+                }
+            };
+
+            const handleEditReview = (reviewId) => {
+                const reviewToEdit = allReviews.find(review => review.id == reviewId);
+                if (!reviewToEdit) return;
+
+                editReviewIdInput.value = reviewToEdit.id;
+                document.querySelector(`input[name="category"][value="${reviewToEdit.category}"]`).checked = true;
+                toggleCategoryFields(reviewToEdit.category);
+                
+                userNameSelect.value = reviewToEdit.user_name;
+                document.getElementById('restaurant-name').value = reviewToEdit.restaurant_name;
+                document.getElementById('comment').value = reviewToEdit.comment;
+                document.getElementById('diferencial').value = reviewToEdit.diferencial || '';
+                
+                for (const key in reviewToEdit.ratings) {
+                    const inputEl = document.getElementById(`rating-${key}`);
+                    if(inputEl) inputEl.value = reviewToEdit.ratings[key];
+                }
+
+                modalTitle.textContent = "Editar Avaliação";
+                submitBtn.textContent = "Salvar Alterações";
+                openModal();
+            };
+
+            const handleFormSubmit = async (event) => {
+                event.preventDefault();
+                
+                const selectedCategory = document.querySelector('input[name="category"]:checked').value;
+                const fields = selectedCategory === 'hamburguer' ? hamburguerFields : pizzaFields;
+                
+                let isFormValid = true;
+                formError.classList.add('hidden');
+                fields.querySelectorAll('.rating-input[required]').forEach(input => {
+                    input.classList.remove('border-red-500');
+                    const value = parseFloat(input.value);
+                    if (isNaN(value) || value > 10 || value < 0) {
+                        isFormValid = false;
+                        input.classList.add('border-red-500');
                     }
                 });
-            });
+
+                if (!isFormValid) {
+                    formError.textContent = 'As notas devem ser um número entre 0 e 10.';
+                    formError.classList.remove('hidden');
+                    return;
+                }
+
+                let ratings = {};
+                if (selectedCategory === 'hamburguer') {
+                    ratings = {
+                        hamburguer: parseFloat(document.getElementById('rating-hamburguer').value),
+                        pao: parseFloat(document.getElementById('rating-pao').value),
+                        equilibrio: parseFloat(document.getElementById('rating-equilibrio').value),
+                        acompanhamentos: parseFloat(document.getElementById('rating-acompanhamentos').value),
+                        atendimento: parseFloat(document.getElementById('rating-atendimento').value),
+                        ambiente: parseFloat(document.getElementById('rating-ambiente').value),
+                        cardapio: parseFloat(document.getElementById('rating-cardapio').value),
+                        tempo: parseFloat(document.getElementById('rating-tempo').value),
+                        custo: parseFloat(document.getElementById('rating-custo').value)
+                    };
+                } else {
+                    ratings = {
+                        massa: parseFloat(document.getElementById('rating-massa').value),
+                        molho: parseFloat(document.getElementById('rating-molho').value),
+                        queijo: parseFloat(document.getElementById('rating-queijo').value),
+                        cobertura: parseFloat(document.getElementById('rating-cobertura').value),
+                        pizza_equilibrio: parseFloat(document.getElementById('rating-pizza_equilibrio').value),
+                        pizza_atendimento: parseFloat(document.getElementById('rating-pizza_atendimento').value),
+                        pizza_ambiente: parseFloat(document.getElementById('rating-pizza_ambiente').value),
+                        pizza_cardapio: parseFloat(document.getElementById('rating-pizza_cardapio').value),
+                        pizza_tempo: parseFloat(document.getElementById('rating-pizza_tempo').value),
+                        pizza_custo: parseFloat(document.getElementById('rating-pizza_custo').value)
+                    };
+                }
+
+                const reviewData = {
+                    author_id: currentUserId,
+                    user_name: userNameSelect.value,
+                    restaurant_name: document.getElementById('restaurant-name').value.trim(),
+                    ratings: ratings,
+                    comment: document.getElementById('comment').value,
+                    category: selectedCategory,
+                    diferencial: selectedCategory === 'pizza' ? document.getElementById('diferencial').value : null,
+                };
+
+                const editingId = editReviewIdInput.value;
+                let error;
+
+                if (editingId) {
+                    const { error: updateError } = await supabaseClient.from('reviews').update(reviewData).eq('id', editingId);
+                    error = updateError;
+                } else {
+                    const { error: insertError } = await supabaseClient.from('reviews').insert([reviewData]);
+                    error = insertError;
+                }
+                
+                if (error) {
+                    console.error("Erro ao salvar avaliação:", error);
+                    formError.textContent = "Erro ao salvar. Tente novamente.";
+                    formError.classList.remove('hidden');
+                } else {
+                    reviewForm.reset();
+                    closeModal();
+                }
+            };
 
             async function fetchAndRenderReviews() {
                 const { data, error } = await supabaseClient.from('reviews').select('*');
@@ -408,6 +545,86 @@
                 }
             }
 
+            function toggleCategoryFields(category) {
+                const isHamburguer = category === 'hamburguer';
+                hamburguerFields.classList.toggle('hidden', !isHamburguer);
+                pizzaFields.classList.toggle('hidden', isHamburguer);
+                
+                hamburguerFields.querySelectorAll('input').forEach(i => i.required = isHamburguer);
+                pizzaFields.querySelectorAll('input').forEach(i => i.required = !isHamburguer);
+            }
+
+            const openModal = () => {
+                formError.classList.add('hidden');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                setTimeout(() => { modalPanel.classList.remove('scale-95', 'opacity-0'); }, 50);
+            };
+
+            const closeModal = () => {
+                modalPanel.classList.add('scale-95', 'opacity-0');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    modal.classList.remove('flex');
+                    reviewForm.reset();
+                    editReviewIdInput.value = '';
+                    modalTitle.textContent = "Sua Avaliação";
+                    submitBtn.textContent = "Publicar";
+                    toggleCategoryFields('hamburguer');
+                }, 200);
+            };
+
+            // --- EVENT LISTENERS ---
+            reviewForm.addEventListener('submit', handleFormSubmit);
+            
+            openModalBtn.addEventListener('click', () => {
+                editReviewIdInput.value = '';
+                modalTitle.textContent = "Sua Avaliação";
+                submitBtn.textContent = "Publicar";
+                toggleCategoryFields(currentCategory);
+                document.querySelector(`input[name="category"][value="${currentCategory}"]`).checked = true;
+                openModal();
+            });
+            
+            closeModalBtn.addEventListener('click', closeModal);
+            
+            modal.addEventListener('click', (e) => {
+                if (e.target.classList.contains('modal-backdrop')) {
+                    closeModal();
+                }
+            });
+            
+            categoryTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    currentCategory = tab.dataset.category;
+                    
+                    categoryTabs.forEach(t => {
+                        t.classList.remove('tab-active');
+                        t.classList.add('text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
+                    });
+                    tab.classList.add('tab-active');
+                    tab.classList.remove('text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
+
+                    if (currentCategory === 'mapa') {
+                        mainContentGrid.classList.add('hidden');
+                        mapContent.classList.remove('hidden');
+                        openModalBtn.style.display = 'none';
+                    } else {
+                        mainContentGrid.classList.remove('hidden');
+                        mapContent.classList.add('hidden');
+                        openModalBtn.style.display = 'flex';
+                        renderContent();
+                    }
+                });
+            });
+
+            categoryRadios.forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    toggleCategoryFields(e.target.value);
+                });
+            });
+
+            // --- INICIALIZAÇÃO E REALTIME ---
             fetchAndRenderReviews();
 
             supabaseClient.channel('public:reviews')
@@ -415,22 +632,6 @@
                 fetchAndRenderReviews();
               })
               .subscribe();
-              
-            // Adicionar todos os outros event listeners (form, botões do modal, etc.)
-            reviewForm.addEventListener('submit', handleFormSubmit);
-            openModalBtn.addEventListener('click', () => { /* ... sua lógica ... */ });
-            closeModalBtn.addEventListener('click', closeModal);
-            modal.addEventListener('click', (e) => {
-                if (e.target.classList.contains('modal-backdrop')) {
-                    closeModal();
-                }
-            });
-            categoryRadios.forEach(radio => {
-                radio.addEventListener('change', (e) => {
-                    /* ... sua lógica ... */
-                });
-            });
-
         });
     </script>
 </body>
