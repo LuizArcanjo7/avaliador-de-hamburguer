@@ -4,10 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Imagem & Degustação - Avaliador</title>
+    <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Supabase Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         body {
@@ -44,12 +47,15 @@
 </head>
 <body class="antialiased text-gray-800">
 
+    <!-- Loading Overlay -->
     <div id="loading-overlay" class="fixed inset-0 z-50 bg-white/80 flex items-center justify-center">
         <div id="loader"></div>
     </div>
 
+    <!-- Main Container -->
     <div class="container mx-auto max-w-7xl p-4 sm:p-6 lg:p-8">
         
+        <!-- Header -->
         <header class="flex flex-col sm:flex-row justify-between items-center mb-8 pb-4 border-b border-gray-200">
             <div>
                 <h1 class="text-3xl font-bold text-gray-900">Imagem & Degustação</h1>
@@ -61,6 +67,7 @@
             </button>
         </header>
 
+        <!-- Category Tabs -->
         <div class="mb-6">
             <div class="border-b border-gray-200">
                 <nav class="-mb-px flex space-x-6" aria-label="Tabs">
@@ -72,32 +79,25 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 0 0-9.4 13.5c.6.9 1.5 1.5 2.4 1.5h14c.9 0 1.8-.6 2.4-1.5A10 10 0 0 0 12 2Z"/><path d="m2 12 10 10 10-10"/><path d="M12 12v10"/></svg>
                         Pizzas
                     </button>
-                    <button data-category="mapa" class="category-tab whitespace-nowrap py-3 px-2 border-b-2 font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300 flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-                        Mapa
-                    </button>
                 </nav>
             </div>
         </div>
-        
-        <div id="map-content" class="hidden bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-             <h2 class="text-xl font-bold mb-4 text-gray-800">Mapa de Locais Salvos</h2>
-             
-             <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d120064.09487958516!2d-44.07616116093749!3d-19.88209670716878!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1spt-BR!2sbr!4v1759061595318!5m2!1spt-BR!2sbr" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
 
-        </div>
-
-        <main id="main-content-grid" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Main Content Grid -->
+        <main class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
+            <!-- Ranking Column -->
             <div class="lg:col-span-1 bg-white p-6 rounded-xl shadow-sm border border-gray-200">
                 <h2 class="text-xl font-bold mb-4 text-gray-800 flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17.5a2.5 2.5 0 0 0 5 0V14.66"/><path d="M8 19h8"/><path d="M9 9h6"/><path d="M12 9V5"/></svg>
                     Ranking
                 </h2>
                 <div id="ranking-list" class="space-y-3">
-                    </div>
+                    <!-- Ranking será inserido aqui -->
+                </div>
             </div>
 
+            <!-- "Novas Avaliações" Column -->
             <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-gray-200">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2">
@@ -107,11 +107,13 @@
                     <p id="total-reviews-count" class="text-sm font-medium text-gray-500"></p>
                 </div>
                 <div id="reviews-feed" class="space-y-4">
-                    </div>
+                    <!-- Feed de novas avaliações será inserido aqui -->
+                </div>
             </div>
         </main>
     </div>
 
+    <!-- Modal for New Review -->
     <div id="reviewModal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
         <div class="modal-backdrop fixed inset-0"></div>
         <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg m-4 relative transform transition-all duration-300 scale-95 opacity-0 overflow-y-auto max-h-[90vh]" id="modal-panel">
@@ -122,6 +124,7 @@
                 <input type="hidden" id="edit-review-id">
 
                 <div class="space-y-5">
+                    <!-- Category Selector -->
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">O que você está avaliando?</label>
                         <div class="flex gap-4">
@@ -159,6 +162,7 @@
                         </div>
                     </div>
                     
+                    <!-- Hamburguer Fields -->
                     <div id="hamburguer-fields" class="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-5">
                         <div><label for="rating-hamburguer" class="block text-sm font-medium text-gray-700 mb-1">Hambúrguer</label><input type="number" id="rating-hamburguer" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required></div>
                         <div><label for="rating-pao" class="block text-sm font-medium text-gray-700 mb-1">Pão</label><input type="number" id="rating-pao" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required></div>
@@ -171,6 +175,7 @@
                         <div><label for="rating-custo" class="block text-sm font-medium text-gray-700 mb-1">Custo</label><input type="number" id="rating-custo" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required></div>
                     </div>
 
+                    <!-- Pizza Fields -->
                     <div id="pizza-fields" class="hidden space-y-5">
                         <div class="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-5">
                             <div><label for="rating-massa" class="block text-sm font-medium text-gray-700 mb-1">Massa</label><input type="number" id="rating-massa" min="0" max="10" step="0.5" class="rating-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"></div>
@@ -204,12 +209,13 @@
         </div>
     </div>
 
+    <!-- Supabase Logic -->
     <script type="module">
         document.addEventListener('DOMContentLoaded', () => {
             const { createClient } = supabase;
 
             const SUPABASE_URL = 'https://pwkupqqwcbixfwbxcnpa.supabase.co';
-            const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzIΙNiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB3a3VwcXF3Y2JpeGZ3YnhjbnBhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYxMjI5MzQsImV4cCI6MjA3MTY5ODkzNH0.nI5x2tGh6uNgmjjdsoAfrKE0gCMbwSqkIqA3FQQlVaI';
+            const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB3a3VwcXF3Y2JpeGZ3YnhjbnBhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYxMjI5MzQsImV4cCI6MjA3MTY5ODkzNH0.nI5x2tGh6uNgmjjdsoAfrKE0gCMbwSqkIqA3FQQlVaI';
 
             const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -232,8 +238,6 @@
             const categoryRadios = document.querySelectorAll('input[name="category"]');
             const hamburguerFields = document.getElementById('hamburguer-fields');
             const pizzaFields = document.getElementById('pizza-fields');
-            const mainContentGrid = document.getElementById('main-content-grid');
-            const mapContent = document.getElementById('map-content');
 
             let allReviews = [];
             let currentCategory = 'hamburguer';
@@ -259,10 +263,9 @@
 
             // --- FUNÇÕES ---
             const calculateFinalScore = (ratings) => {
-                if (!ratings) return 0.0;
                 const scores = Object.values(ratings);
-                const sum = scores.reduce((acc, score) => acc + (parseFloat(score) || 0), 0);
-                return scores.length > 0 ? (sum / scores.length) : 0.0;
+                const sum = scores.reduce((acc, score) => acc + score, 0);
+                return sum / scores.length;
             };
             
             const createReviewCardHTML = (review) => {
@@ -345,21 +348,27 @@
             const renderRanking = () => {
                 const filteredReviews = allReviews.filter(r => r.category === currentCategory);
                 if (filteredReviews.length === 0) {
-                    rankingList.innerHTML = `<p class="text-sm text-gray-500 text-center p-4">O ranking aparecerá aqui.</p>`;
+                    rankingList.innerHTML = `<p class="text-sm text-gray-500 text-center p-4">O ranking aparecerá aqui quando houver avaliações.</p>`;
                     return;
                 }
+
                 const restaurantScores = {};
                 filteredReviews.forEach(review => {
                     const normalizedName = review.restaurant_name.trim().toLowerCase();
                     if (!restaurantScores[normalizedName]) {
-                        restaurantScores[normalizedName] = { originalName: review.restaurant_name.trim(), scores: [] };
+                        restaurantScores[normalizedName] = { 
+                            originalName: review.restaurant_name.trim(),
+                            scores: [] 
+                        };
                     }
                     restaurantScores[normalizedName].scores.push(calculateFinalScore(review.ratings));
                 });
+
                 const rankedList = Object.values(restaurantScores).map(resto => {
                     const average = resto.scores.reduce((a, b) => a + b, 0) / resto.scores.length;
                     return { name: resto.originalName, averageScore: average };
                 }).sort((a, b) => b.averageScore - a.averageScore);
+
                 rankingList.innerHTML = rankedList.map((resto, index) => `
                     <div class="flex items-center justify-between bg-gray-50 p-3 rounded-lg">
                         <div class="flex items-center gap-3">
@@ -378,10 +387,12 @@
                 if (sortedReviews.length > 0) {
                     reviewsFeed.innerHTML = sortedReviews.map(createReviewCardHTML).join('');
                 } else {
-                    reviewsFeed.innerHTML = `<p class="text-sm text-gray-500 text-center p-4">Nenhuma avaliação para esta categoria.</p>`;
+                    reviewsFeed.innerHTML = `<p class="text-sm text-gray-500 text-center p-4">Nenhuma avaliação foi feita ainda para esta categoria.</p>`;
                 }
+                
                 const count = sortedReviews.length;
                 totalReviewsCountEl.textContent = `${count} ${count === 1 ? 'avaliação registrada' : 'avaliações registradas'}`;
+
                 renderRanking();
                 addDeleteButtonListeners();
                 addEditButtonListeners();
@@ -411,6 +422,7 @@
                     .from('reviews')
                     .delete()
                     .eq('id', reviewId);
+                
                 if (error) {
                     console.error("Erro ao apagar avaliação:", error);
                 }
@@ -420,6 +432,7 @@
                 const reviewToEdit = allReviews.find(review => review.id == reviewId);
                 if (!reviewToEdit) return;
 
+                // Preenche o formulário
                 editReviewIdInput.value = reviewToEdit.id;
                 document.querySelector(`input[name="category"][value="${reviewToEdit.category}"]`).checked = true;
                 toggleCategoryFields(reviewToEdit.category);
@@ -447,13 +460,8 @@
                 
                 let isFormValid = true;
                 formError.classList.add('hidden');
-                fields.querySelectorAll('.rating-input[required]').forEach(input => {
+                fields.querySelectorAll('.rating-input').forEach(input => {
                     input.classList.remove('border-red-500');
-                    if (input.value === '') {
-                        isFormValid = false;
-                        input.classList.add('border-red-500');
-                        return;
-                    }
                     const value = parseFloat(input.value);
                     if (isNaN(value) || value > 10 || value < 0) {
                         isFormValid = false;
@@ -526,6 +534,7 @@
                 }
             };
 
+            // --- LISTENER DO SUPABASE ---
             async function fetchAndRenderReviews() {
                 const { data, error } = await supabaseClient.from('reviews').select('*');
                 if (error) {
@@ -539,13 +548,27 @@
             }
 
             function toggleCategoryFields(category) {
-                const isHamburguer = category === 'hamburguer';
-                hamburguerFields.classList.toggle('hidden', !isHamburguer);
-                pizzaFields.classList.toggle('hidden', isHamburguer);
-                
-                hamburguerFields.querySelectorAll('input').forEach(i => i.required = isHamburguer);
-                pizzaFields.querySelectorAll('input').forEach(i => i.required = !isHamburguer);
+                if (category === 'hamburguer') {
+                    hamburguerFields.classList.remove('hidden');
+                    pizzaFields.classList.add('hidden');
+                    pizzaFields.querySelectorAll('input, textarea').forEach(i => i.required = false);
+                    hamburguerFields.querySelectorAll('input').forEach(i => i.required = true);
+                } else {
+                    hamburguerFields.classList.add('hidden');
+                    pizzaFields.classList.remove('hidden');
+                    hamburguerFields.querySelectorAll('input').forEach(i => i.required = false);
+                    pizzaFields.querySelectorAll('input').forEach(i => i.required = true);
+                }
             }
+
+            // --- INICIALIZAÇÃO E REALTIME ---
+            fetchAndRenderReviews();
+
+            supabaseClient.channel('public:reviews')
+              .on('postgres_changes', { event: '*', schema: 'public', table: 'reviews' }, payload => {
+                fetchAndRenderReviews();
+              })
+              .subscribe();
 
             const openModal = () => {
                 formError.classList.add('hidden');
@@ -569,7 +592,6 @@
 
             // --- EVENT LISTENERS ---
             reviewForm.addEventListener('submit', handleFormSubmit);
-            
             openModalBtn.addEventListener('click', () => {
                 editReviewIdInput.value = '';
                 modalTitle.textContent = "Sua Avaliação";
@@ -578,57 +600,31 @@
                 document.querySelector(`input[name="category"][value="${currentCategory}"]`).checked = true;
                 openModal();
             });
-            
             closeModalBtn.addEventListener('click', closeModal);
-            
             modal.addEventListener('click', (e) => {
                 if (e.target.classList.contains('modal-backdrop')) {
                     closeModal();
                 }
             });
-            
-            // LÓGICA DAS ABAS MODIFICADA
             categoryTabs.forEach(tab => {
                 tab.addEventListener('click', () => {
                     currentCategory = tab.dataset.category;
-                    
+                    categoryTabs.forEach(t => t.classList.remove('tab-active', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300'));
                     categoryTabs.forEach(t => {
-                        if (t === tab) {
+                        if (t.dataset.category === currentCategory) {
                             t.classList.add('tab-active');
-                            t.classList.remove('text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
                         } else {
-                            t.classList.remove('tab-active');
                             t.classList.add('text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
                         }
                     });
-
-                    if (currentCategory === 'mapa') {
-                        mainContentGrid.classList.add('hidden');
-                        mapContent.classList.remove('hidden');
-                        openModalBtn.style.display = 'none'; // Esconde o botão de Nova Avaliação
-                    } else {
-                        mainContentGrid.classList.remove('hidden');
-                        mapContent.classList.add('hidden');
-                        openModalBtn.style.display = 'flex'; // Mostra o botão
-                        renderContent();
-                    }
+                    renderContent();
                 });
             });
-
             categoryRadios.forEach(radio => {
                 radio.addEventListener('change', (e) => {
                     toggleCategoryFields(e.target.value);
                 });
             });
-
-            // --- INICIALIZAÇÃO E REALTIME ---
-            fetchAndRenderReviews();
-
-            supabaseClient.channel('public:reviews')
-              .on('postgres_changes', { event: '*', schema: 'public', table: 'reviews' }, payload => {
-                fetchAndRenderReviews();
-              })
-              .subscribe();
         });
     </script>
 </body>
