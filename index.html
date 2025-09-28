@@ -79,20 +79,12 @@
                 </nav>
             </div>
         </div>
+        
+        <div id="map-content" class="hidden bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+             <h2 class="text-xl font-bold mb-4 text-gray-800">Mapa de Locais Salvos</h2>
+             
+             <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d120064.09487958516!2d-44.07616116093749!3d-19.88209670716878!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1spt-BR!2sbr!4v1759061595318!5m2!1spt-BR!2sbr" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
 
-        <div id="map-content" class="hidden">
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                 <h2 class="text-xl font-bold mb-4 text-gray-800">Mapa de Locais Salvos</h2>
-                 <iframe 
-                    src="" 
-                    width="100%" 
-                    height="600" 
-                    style="border:0;" 
-                    allowfullscreen="" 
-                    loading="lazy" 
-                    referrerpolicy="no-referrer-when-downgrade">
-                </iframe>
-            </div>
         </div>
 
         <main id="main-content-grid" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -217,7 +209,7 @@
             const { createClient } = supabase;
 
             const SUPABASE_URL = 'https://pwkupqqwcbixfwbxcnpa.supabase.co';
-            const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB3a3VwcXF3Y2JpeGZ3YnhjbnBhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYxMjI5MzQsImV4cCI6MjA3MTY5ODkzNH0.nI5x2tGh6uNgmjjdsoAfrKE0gCMbwSqkIqA3FQQlVaI';
+            const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzIΙNiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB3a3VwcXF3Y2JpeGZ3YnhjbnBhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYxMjI5MzQsImV4cCI6MjA3MTY5ODkzNH0.nI5x2tGh6uNgmjjdsoAfrKE0gCMbwSqkIqA3FQQlVaI';
 
             const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -240,7 +232,6 @@
             const categoryRadios = document.querySelectorAll('input[name="category"]');
             const hamburguerFields = document.getElementById('hamburguer-fields');
             const pizzaFields = document.getElementById('pizza-fields');
-            // NOVOS ELEMENTOS DO MAPA
             const mainContentGrid = document.getElementById('main-content-grid');
             const mapContent = document.getElementById('map-content');
 
@@ -268,10 +259,10 @@
 
             // --- FUNÇÕES ---
             const calculateFinalScore = (ratings) => {
-                const scores = Object.values(ratings || {});
-                if (scores.length === 0) return 0;
+                if (!ratings) return 0.0;
+                const scores = Object.values(ratings);
                 const sum = scores.reduce((acc, score) => acc + (parseFloat(score) || 0), 0);
-                return sum / scores.length;
+                return scores.length > 0 ? (sum / scores.length) : 0.0;
             };
             
             const createReviewCardHTML = (review) => {
@@ -287,31 +278,30 @@
                 `;
                 
                 let ratingsHTML = '';
-                const ratings = review.ratings || {};
                 if (review.category === 'hamburguer') {
                     ratingsHTML = `
-                        <div><span class="font-semibold block sm:inline">Hambúrguer:</span> ${(ratings.hamburguer || 0).toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Pão:</span> ${(ratings.pao || 0).toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Equilíbrio:</span> ${(ratings.equilibrio || 0).toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Acompanh.:</span> ${(ratings.acompanhamentos || 0).toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Atendimento:</span> ${(ratings.atendimento || 0).toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Ambiente:</span> ${(ratings.ambiente || 0).toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Cardápio:</span> ${(ratings.cardapio || 0).toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Tempo:</span> ${(ratings.tempo || 0).toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Custo:</span> ${(ratings.custo || 0).toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Hambúrguer:</span> ${review.ratings.hamburguer.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Pão:</span> ${review.ratings.pao.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Equilíbrio:</span> ${review.ratings.equilibrio.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Acompanh.:</span> ${review.ratings.acompanhamentos.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Atendimento:</span> ${review.ratings.atendimento.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Ambiente:</span> ${review.ratings.ambiente.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Cardápio:</span> ${review.ratings.cardapio.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Tempo:</span> ${review.ratings.tempo.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Custo:</span> ${review.ratings.custo.toFixed(1)}</div>
                     `;
                 } else if (review.category === 'pizza') {
                      ratingsHTML = `
-                        <div><span class="font-semibold block sm:inline">Massa:</span> ${(ratings.massa || 0).toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Molho:</span> ${(ratings.molho || 0).toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Queijo:</span> ${(ratings.queijo || 0).toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Cobertura:</span> ${(ratings.cobertura || 0).toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Equilíbrio:</span> ${(ratings.pizza_equilibrio || 0).toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Atendimento:</span> ${(ratings.pizza_atendimento || 0).toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Ambiente:</span> ${(ratings.pizza_ambiente || 0).toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Cardápio:</span> ${(ratings.pizza_cardapio || 0).toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Tempo:</span> ${(ratings.pizza_tempo || 0).toFixed(1)}</div>
-                        <div><span class="font-semibold block sm:inline">Custo:</span> ${(ratings.pizza_custo || 0).toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Massa:</span> ${review.ratings.massa.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Molho:</span> ${review.ratings.molho.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Queijo:</span> ${review.ratings.queijo.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Cobertura:</span> ${review.ratings.cobertura.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Equilíbrio:</span> ${review.ratings.pizza_equilibrio.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Atendimento:</span> ${review.ratings.pizza_atendimento.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Ambiente:</span> ${review.ratings.pizza_ambiente.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Cardápio:</span> ${review.ratings.pizza_cardapio.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Tempo:</span> ${review.ratings.pizza_tempo.toFixed(1)}</div>
+                        <div><span class="font-semibold block sm:inline">Custo:</span> ${review.ratings.pizza_custo.toFixed(1)}</div>
                     `;
                 }
                 
@@ -391,7 +381,7 @@
                     reviewsFeed.innerHTML = `<p class="text-sm text-gray-500 text-center p-4">Nenhuma avaliação para esta categoria.</p>`;
                 }
                 const count = sortedReviews.length;
-                totalReviewsCountEl.textContent = `${count} ${count === 1 ? 'avaliação' : 'avaliações'}`;
+                totalReviewsCountEl.textContent = `${count} ${count === 1 ? 'avaliação registrada' : 'avaliações registradas'}`;
                 renderRanking();
                 addDeleteButtonListeners();
                 addEditButtonListeners();
@@ -401,9 +391,7 @@
                 document.querySelectorAll('.delete-btn').forEach(button => {
                     button.addEventListener('click', (e) => {
                         const reviewIdToDelete = e.currentTarget.dataset.reviewId;
-                        if(confirm('Tem certeza que deseja apagar esta avaliação?')) {
-                            handleDeleteReview(reviewIdToDelete);
-                        }
+                        handleDeleteReview(reviewIdToDelete);
                     });
                 });
             };
@@ -461,6 +449,11 @@
                 formError.classList.add('hidden');
                 fields.querySelectorAll('.rating-input[required]').forEach(input => {
                     input.classList.remove('border-red-500');
+                    if (input.value === '') {
+                        isFormValid = false;
+                        input.classList.add('border-red-500');
+                        return;
+                    }
                     const value = parseFloat(input.value);
                     if (isNaN(value) || value > 10 || value < 0) {
                         isFormValid = false;
@@ -594,25 +587,29 @@
                 }
             });
             
+            // LÓGICA DAS ABAS MODIFICADA
             categoryTabs.forEach(tab => {
                 tab.addEventListener('click', () => {
                     currentCategory = tab.dataset.category;
                     
                     categoryTabs.forEach(t => {
-                        t.classList.remove('tab-active');
-                        t.classList.add('text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
+                        if (t === tab) {
+                            t.classList.add('tab-active');
+                            t.classList.remove('text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
+                        } else {
+                            t.classList.remove('tab-active');
+                            t.classList.add('text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
+                        }
                     });
-                    tab.classList.add('tab-active');
-                    tab.classList.remove('text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
 
                     if (currentCategory === 'mapa') {
                         mainContentGrid.classList.add('hidden');
                         mapContent.classList.remove('hidden');
-                        openModalBtn.style.display = 'none';
+                        openModalBtn.style.display = 'none'; // Esconde o botão de Nova Avaliação
                     } else {
                         mainContentGrid.classList.remove('hidden');
                         mapContent.classList.add('hidden');
-                        openModalBtn.style.display = 'flex';
+                        openModalBtn.style.display = 'flex'; // Mostra o botão
                         renderContent();
                     }
                 });
