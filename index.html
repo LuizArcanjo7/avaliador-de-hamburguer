@@ -83,8 +83,8 @@
                 <div id="map-content" class="hidden">
             <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
                 <h2 class="text-xl font-bold mb-4 text-gray-800">Mapa de Locais Salvos</h2>
-                                <iframe 
-                    src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d120064.09487958516!2d-44.07616116093749!3d-19.88209670716878!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1spt-BR!2sbr!4v1759061595318!5m2!1spt-BR!2sbr"
+                <iframe 
+                    src="http://googleusercontent.com/maps/google.com/6" 
                     width="100%" 
                     height="600" 
                     style="border:0;" 
@@ -121,7 +121,7 @@
     </div>
 
         <div id="reviewModal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
-        <div class="modal-backdrop fixed inset-0"></div>
+                <div class="modal-backdrop fixed inset-0"></div>
         <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg m-4 relative transform transition-all duration-300 scale-95 opacity-0 overflow-y-auto max-h-[90vh]" id="modal-panel">
             <form id="review-form" class="p-8">
                 <h3 id="modal-title" class="text-2xl font-bold mb-2 text-gray-900">Sua Avaliação</h3>
@@ -240,6 +240,9 @@
             const categoryRadios = document.querySelectorAll('input[name="category"]');
             const hamburguerFields = document.getElementById('hamburguer-fields');
             const pizzaFields = document.getElementById('pizza-fields');
+            // ELEMENTOS DO MAPA ADICIONADOS
+            const mainContentGrid = document.getElementById('main-content-grid');
+            const mapContent = document.getElementById('map-content');
 
             let allReviews = [];
             let currentCategory = 'hamburguer';
@@ -609,32 +612,31 @@
                 }
             });
             
-            // LÓGICA DAS ABAS MODIFICADA
+            // LÓGICA DAS ABAS MODIFICADA PARA INCLUIR O MAPA
             categoryTabs.forEach(tab => {
                 tab.addEventListener('click', () => {
                     currentCategory = tab.dataset.category;
-
-                    // Atualiza a aparência das abas
+                    
+                    // Mantém a sua lógica original de formatação das abas
+                    categoryTabs.forEach(t => t.classList.remove('tab-active', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300'));
                     categoryTabs.forEach(t => {
-                        if (t === tab) {
+                        if (t.dataset.category === currentCategory) {
                             t.classList.add('tab-active');
-                            t.classList.remove('text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
                         } else {
-                            t.classList.remove('tab-active');
                             t.classList.add('text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
                         }
                     });
 
-                    // Mostra ou esconde o conteúdo apropriado
+                    // Adiciona a lógica para mostrar/esconder o mapa ou as avaliações
                     if (currentCategory === 'mapa') {
                         mainContentGrid.classList.add('hidden');
                         mapContent.classList.remove('hidden');
-                        openModalBtn.style.display = 'none'; // Esconde o botão "Nova Avaliação"
+                        openModalBtn.style.display = 'none'; // Esconde botão "Nova Avaliação"
                     } else {
                         mainContentGrid.classList.remove('hidden');
                         mapContent.classList.add('hidden');
-                        openModalBtn.style.display = 'flex'; // Mostra o botão novamente
-                        renderContent();
+                        openModalBtn.style.display = 'flex'; // Mostra o botão
+                        renderContent(); // Chama a função original para renderizar as avaliações
                     }
                 });
             });
