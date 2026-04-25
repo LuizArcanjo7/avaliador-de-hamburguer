@@ -35,7 +35,7 @@
                     <label class="block text-sm font-medium">Quem consumiu? (Dividir entre:)</label>
                     <label class="flex items-center space-x-1 text-sm font-bold text-blue-600 cursor-pointer hover:bg-blue-50 p-1 rounded transition">
                         <input type="checkbox" id="chk-todos" class="rounded cursor-pointer">
-                        <span>Marcar Todos</span>
+                        <span>Dividir para todos</span>
                     </label>
                 </div>
                 <div id="consumidores" class="grid grid-cols-3 md:grid-cols-5 gap-2 border-t pt-3"></div>
@@ -82,10 +82,11 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
+        // LISTA DE PESSOAS ATUALIZADA CONFORME A IMAGEM
         const pessoas = [
-            "Uana", "Luiz", "Mimi", "Marlene", "Fernando", 
-            "Rose", "Victor", "Silvia", "Vovó Maria", "Fabi", 
-            "Roger", "Lara", "Guilherme", "Lorena", "Valdir"
+            "Luana", "Luiz", "Mimi", "Marlene", "Fernando", 
+            "Rose", "Victor", "Vovó Silvia", "Vovó Maria", "Vovó Fabi", 
+            "Vovô Roger", "Lara", "Guilherme", "Lorena", "Valdir"
         ];
 
         const pagadorSelect = document.getElementById('pagador');
@@ -105,7 +106,7 @@
             consumidoresDiv.appendChild(label);
         });
 
-        // NOVIDADE: Lógica do botão "Marcar Todos"
+        // Lógica do botão "Dividir para todos"
         chkTodos.addEventListener('change', (e) => {
             const checkboxes = document.querySelectorAll('.consumidor-chk');
             checkboxes.forEach(chk => {
@@ -113,7 +114,7 @@
             });
         });
 
-        // Lógica para desmarcar o "Marcar Todos" se alguém desmarcar uma pessoa manualmente
+        // Lógica para desmarcar o "Dividir para todos" se alguém desmarcar uma pessoa manualmente
         consumidoresDiv.addEventListener('change', (e) => {
             if (e.target.classList.contains('consumidor-chk')) {
                 const totalCheckboxes = document.querySelectorAll('.consumidor-chk').length;
@@ -148,7 +149,7 @@
             document.getElementById('desc').value = '';
             document.getElementById('valor').value = '';
             document.querySelectorAll('.consumidor-chk').forEach(chk => chk.checked = false);
-            chkTodos.checked = false; // Desmarca o "Marcar Todos" também
+            chkTodos.checked = false; 
         });
 
         // Ouvir o Banco de Dados em Tempo Real
